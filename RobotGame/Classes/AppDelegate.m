@@ -2,14 +2,13 @@
 //  AppDelegate.m
 //  RobotGame
 //
-//  Created by Ed on 2014-04-21.
-//  Copyright Ed 2014. All rights reserved.
+//  Created by Dilip Muthukrishnan on 2014-04-21.
+//  Copyright Dilip Muthukrishnan 2014. All rights reserved.
 //
 // -----------------------------------------------------------------------
 
 #import "AppDelegate.h"
-#import "IntroScene.h"
-#import "HelloWorldScene.h"
+#import "GameScene.h"
 
 @implementation AppDelegate
 
@@ -49,7 +48,7 @@
 -(CCScene *)startScene
 {
 	// This method should return the very first scene to be run when your app starts.
-	return [IntroScene scene];
+	return [GameScene scene];
 }
 
 @end

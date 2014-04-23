@@ -57,6 +57,7 @@
 #import "CCActionInterval.h"
 #import "CCActionProgressTimer.h"
 #import "CCActionTween.h"
+#import "CCAnimation.h"
 #import "CCClippingNode.h"
 #import "CCColor.h"
 #import "CCConfiguration.h"
@@ -107,7 +108,6 @@
 #import "OALSimpleAudio.h"
 
 // Retiring
-//#import "CCAnimation.h"
 //#import "CCAnimationCache.h"
 //#import "CCActionManager.h"
 //#import "ccFPSImages.h"
