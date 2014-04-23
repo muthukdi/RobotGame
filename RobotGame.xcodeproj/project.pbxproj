@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		64257B3E19077AD2000E8DEC /* Renderable.m in Sources */ = {isa = PBXBuildFile; fileRef = 64257B3D19077AD2000E8DEC /* Renderable.m */; };
+		64257B4119078DB6000E8DEC /* Robot.m in Sources */ = {isa = PBXBuildFile; fileRef = 64257B4019078DB6000E8DEC /* Robot.m */; };
 		644310D31906011E00E7CA11 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 644310D21906011E00E7CA11 /* QuartzCore.framework */; };
 		644310D51906011E00E7CA11 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 644310D41906011E00E7CA11 /* OpenGLES.framework */; };
 		644310D71906011E00E7CA11 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 644310D61906011E00E7CA11 /* OpenAL.framework */; };
@@ -267,6 +269,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		64257B3C19077AD2000E8DEC /* Renderable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Renderable.h; path = Classes/Renderable.h; sourceTree = "<group>"; };
+		64257B3D19077AD2000E8DEC /* Renderable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Renderable.m; path = Classes/Renderable.m; sourceTree = "<group>"; };
+		64257B3F19078DB6000E8DEC /* Robot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Robot.h; sourceTree = "<group>"; };
+		64257B4019078DB6000E8DEC /* Robot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Robot.m; sourceTree = "<group>"; };
 		644310CF1906011E00E7CA11 /* RobotGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RobotGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		644310D21906011E00E7CA11 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		644310D41906011E00E7CA11 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -1670,6 +1676,10 @@
 				6443137B1906012100E7CA11 /* AppDelegate.m */,
 				644313801906012100E7CA11 /* GameScene.h */,
 				644313811906012100E7CA11 /* GameScene.m */,
+				64257B3F19078DB6000E8DEC /* Robot.h */,
+				64257B4019078DB6000E8DEC /* Robot.m */,
+				64257B3C19077AD2000E8DEC /* Renderable.h */,
+				64257B3D19077AD2000E8DEC /* Renderable.m */,
 			);
 			name = Classes;
 			sourceTree = "<group>";
@@ -1855,6 +1865,7 @@
 				644312311906012000E7CA11 /* CGPointExtension.m in Sources */,
 				644312BC1906012000E7CA11 /* CCTextField.m in Sources */,
 				644312271906012000E7CA11 /* CCProfiling.m in Sources */,
+				64257B3E19077AD2000E8DEC /* Renderable.m in Sources */,
 				6443124E1906012000E7CA11 /* OALAction.m in Sources */,
 				644311E41906011F00E7CA11 /* CCTexturePVR.m in Sources */,
 				644312F31906012100E7CA11 /* CCBAnimationManager.m in Sources */,
@@ -1865,6 +1876,7 @@
 				6443112E1906011E00E7CA11 /* CCActionTween.m in Sources */,
 				6443129C1906012000E7CA11 /* NSMutableDictionary+WeakReferences.m in Sources */,
 				644311791906011F00E7CA11 /* CCNode+Debug.m in Sources */,
+				64257B4119078DB6000E8DEC /* Robot.m in Sources */,
 				644311321906011E00E7CA11 /* CCAnimation.m in Sources */,
 				644312DB1906012100E7CA11 /* mat3.c in Sources */,
 				644311E71906011F00E7CA11 /* CCTiledMap.m in Sources */,
@@ -2155,6 +2167,7 @@
 				644313871906012100E7CA11 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		644313881906012100E7CA11 /* Build configuration list for PBXNativeTarget "RobotGame" */ = {
 			isa = XCConfigurationList;
@@ -2163,6 +2176,7 @@
 				6443138A1906012100E7CA11 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

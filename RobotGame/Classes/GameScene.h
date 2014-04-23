@@ -8,16 +8,17 @@
 
 #import "cocos2d.h"
 #import "cocos2d-ui.h"
+#import "Robot.h"
 
 @interface GameScene : CCScene
 {
-    CCSprite *robotIdle;
-    CCTexture *texture;
-    int frameIndex;
+    Robot *_robot;
 }
 
 + (GameScene *)scene;
+
 - (id)init;
+- (void)tick:(CCTime)dt;
 
 
 @end

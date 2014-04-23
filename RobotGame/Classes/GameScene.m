@@ -8,7 +8,6 @@
 
 #import "GameScene.h"
 
-
 @implementation GameScene
 
 + (GameScene *)scene
@@ -25,19 +24,15 @@
     background.position = ccp(self.contentSize.width/2, self.contentSize.height/2);
     [self addChild:background];
     
-    texture = [CCTexture textureWithFile:@"robot_idle.png"];
-    CCNodeColor *node = [CCNodeColor nodeWithColor:[CCColor colorWithUIColor:[UIColor redColor]]
-                                             width:texture.contentSize.width/8
-                                            height:texture.contentSize.height];
-    node.scale = 2.0;
-    node.position = ccp(self.contentSize.width/2, node.boundingBox.size.height/2);
-    [self addChild:node];
-    robotIdle = [CCSprite spriteWithTexture:texture
-                                       rect:CGRectMake(0, 0, texture.contentSize.width/8, texture.contentSize.height)];
-    robotIdle.scale = 2.0;
-    robotIdle.position = ccp(self.contentSize.width/2, robotIdle.boundingBox.size.height/2);
-    [self addChild:robotIdle];
-    frameIndex = 0;
+    _robot = [[Robot alloc] initWithPosition:ccp(self.contentSize.width/2, 128.0) view:self];
+
+    // Create a back button
+    CCButton *backButton = [CCButton buttonWithTitle:@"[ Toggle State ]" fontName:@"Verdana-Bold" fontSize:18.0f];
+    backButton.positionType = CCPositionTypeNormalized;
+    backButton.position = ccp(0.85f, 0.95f);
+    [backButton setTarget:self selector:@selector(toggleRobotState)];
+    [self addChild:backButton];
+    
     [self schedule:@selector(tick:) interval:0.1];
     
 	return self;
@@ -45,16 +40,12 @@
 
 - (void)tick:(CCTime)dt
 {
-    [robotIdle setTextureRect:CGRectMake(frameIndex*texture.contentSize.width/8, 0,
-                                         texture.contentSize.width/8, texture.contentSize.height)];
-    if (frameIndex < 7)
-    {
-        frameIndex++;
-    }
-    else
-    {
-        frameIndex = 0;
-    }
+    [_robot update:dt];
+}
+
+- (void)toggleRobotState
+{
+    _robot.state = (_robot.state == ROBOT_IDLE) ? ROBOT_RUN : ROBOT_IDLE;
 }
 
 @end
