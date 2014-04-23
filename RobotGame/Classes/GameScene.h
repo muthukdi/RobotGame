@@ -18,7 +18,6 @@
 + (GameScene *)scene;
 
 - (id)init;
-- (void)tick:(CCTime)dt;
 
 
 @end

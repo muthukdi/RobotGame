@@ -20,9 +20,13 @@
     
     _view = scene;
     _state = ROBOT_IDLE;
-    _renderableIdle = [[Renderable alloc] initWithImageFile:@"robot_idle.png" numberOfCells:8];
+    _renderableIdle = [[Renderable alloc] initWithImageFile:@"robot_idle.png"
+                                                   duration:1.0f
+                                              numberOfCells:8];
     [_view addChild:_renderableIdle.sprite];
-    _renderableRun = [[Renderable alloc] initWithImageFile:@"robot_run.png" numberOfCells:6];
+    _renderableRun = [[Renderable alloc] initWithImageFile:@"robot_run.png"
+                                                  duration:0.5f
+                                             numberOfCells:6];
     [_view addChild:_renderableRun.sprite];
     _renderableIdle.sprite.position = position;
     _renderableRun.sprite.visible = NO;

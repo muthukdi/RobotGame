@@ -33,12 +33,10 @@
     [backButton setTarget:self selector:@selector(toggleRobotState)];
     [self addChild:backButton];
     
-    [self schedule:@selector(tick:) interval:0.1];
-    
 	return self;
 }
 
-- (void)tick:(CCTime)dt
+- (void)update:(CCTime)dt
 {
     [_robot update:dt];
 }

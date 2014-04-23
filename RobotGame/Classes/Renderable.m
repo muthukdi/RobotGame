@@ -12,25 +12,26 @@
 
 @synthesize sprite = _sprite;
 
-- (id)initWithImageFile:(NSString *)imageFile numberOfCells:(int)numCells
+- (id)initWithImageFile:(NSString *)imageFile duration:(float)duration numberOfCells:(int)numCells
 {
     self = [super init];
     if (!self) return(nil);
     
+    _time = 0.0f;
+    _duration = duration;
     _numCells = numCells;
     _tex = [CCTexture textureWithFile:imageFile];
     _cellWidth = _tex.contentSize.width/_numCells;
     _cellHeight = _tex.contentSize.height;
     _sprite = [CCSprite spriteWithTexture:_tex rect:CGRectMake(0, 0, _cellWidth, _cellHeight)];
-    _sprite.scale = 2.0;
-    _frameIndex = 0;
+    _sprite.scale = 2.0f;
     
 	return self;
 }
 
 - (void)rewind
 {
-    _frameIndex = 0;
+    _time = 0.0f;
 }
 
 - (void)animate:(CCTime)dt
@@ -40,9 +41,25 @@
     {
         return;
     }
-    CGRect nextFrame = CGRectMake(_frameIndex*_cellWidth, 0, _cellWidth, _cellHeight);
+    // update time position
+    _time += dt;
+    // see if we've reached or passed the end
+    if (_time >= _duration)
+    {
+        // wrap around
+        _time = 0.0f;
+    }
+    // figure out which frame we're on
+    int frameNo;
+    if (_time < _duration)
+    {
+        // select a frame based on time position
+        float progress = _time/_duration;
+        frameNo = (int)(_numCells * progress);
+    }
+    // The next frame might be the same depending on progress
+    CGRect nextFrame = CGRectMake(frameNo*_cellWidth, 0, _cellWidth, _cellHeight);
     [_sprite setTextureRect:nextFrame];
-    _frameIndex = (_frameIndex < _numCells - 1) ? _frameIndex + 1 : 0;
 }
 
 @end

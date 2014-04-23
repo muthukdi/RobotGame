@@ -12,15 +12,16 @@
 @interface Renderable : NSObject
 {
     CCTexture *_tex;
-    int _frameIndex;
     int _numCells;
     int _cellWidth;
     int _cellHeight;
+    float _time;
+    float _duration;
 }
 
 @property (nonatomic, readonly) CCSprite *sprite;
 
-- (id)initWithImageFile:(NSString *)imageFile numberOfCells:(int)numCells;
+- (id)initWithImageFile:(NSString *)imageFile duration:(float)duration numberOfCells:(int)numCells;
 - (void)rewind;
 - (void)animate:(CCTime)dt;
 
