@@ -20,6 +20,8 @@ typedef enum RobotStateTypes
 @protocol RobotDelegate
 
 - (void)addChild:(CCNode*)child;
+- (CGFloat)getScreenWidth;
+- (CGFloat)getScreenHeight;
 
 @end
 
@@ -32,6 +34,7 @@ typedef enum RobotStateTypes
 
 @property (nonatomic, assign) Renderable *renderable;
 @property (nonatomic, assign) RobotState state;
+@property (nonatomic, assign) BOOL direction;
 
 - (id)initWithPosition:(CGPoint)position view:(id)scene;
 - (void)update:(CCTime)dt;

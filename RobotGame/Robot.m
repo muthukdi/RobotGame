@@ -12,6 +12,7 @@
 
 @synthesize renderable = _renderable;
 @synthesize state = _state;
+@synthesize direction = _direction;
 
 - (id)initWithPosition:(CGPoint)position view:(id)scene
 {
@@ -73,8 +74,49 @@
 	_state = newState;
 }
 
+- (void)setDirection:(BOOL)direction
+{
+    _direction = direction;
+    _renderableIdle.sprite.flipX = direction;
+    _renderableRun.sprite.flipX = direction;
+}
+
 - (void)update:(CCTime)dt
 {
+    float runningSpeed = 500;
+    switch (_state)
+    {
+        case ROBOT_IDLE:
+        {
+            break;
+        }
+        case ROBOT_RUN:
+        {
+            CGFloat x = _renderable.sprite.position.x;
+            CGFloat y = _renderable.sprite.position.y;
+            CGFloat width = _renderable.sprite.boundingBox.size.width;
+            if (_direction)
+            {
+                _renderable.sprite.position = ccp(x - (dt * runningSpeed), y);
+            }
+            else
+            {
+                _renderable.sprite.position = ccp(x + (dt * runningSpeed), y);
+            }
+            if (_renderable.sprite.position.x < width/2)
+            {
+                _renderable.sprite.position =  ccp(width/2, y);
+            }
+            if (_renderable.sprite.position.x > [_view getScreenWidth] - width/2)
+            {
+                _renderable.sprite.position =  ccp([_view getScreenWidth] - width/2, y);
+            }
+            break;
+        }
+        default:
+            // Shouldn't happen
+            break;
+    }
     [_renderable animate:dt];
 }
 

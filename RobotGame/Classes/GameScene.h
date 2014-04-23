@@ -10,9 +10,10 @@
 #import "cocos2d-ui.h"
 #import "Robot.h"
 
-@interface GameScene : CCScene
+@interface GameScene : CCScene <RobotDelegate>
 {
     Robot *_robot;
+    CCButton *leftButton, *rightButton;
 }
 
 + (GameScene *)scene;

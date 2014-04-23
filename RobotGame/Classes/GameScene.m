@@ -26,24 +26,51 @@
     
     _robot = [[Robot alloc] initWithPosition:ccp(self.contentSize.width/2, 128.0) view:self];
 
-    // Create a back button
-    CCButton *backButton = [CCButton buttonWithTitle:@"[ Toggle State ]" fontName:@"Verdana-Bold" fontSize:18.0f];
-    backButton.positionType = CCPositionTypeNormalized;
-    backButton.position = ccp(0.85f, 0.95f);
-    [backButton setTarget:self selector:@selector(toggleRobotState)];
-    [self addChild:backButton];
+    // Create the left and right motion controls
+    leftButton = [CCButton buttonWithTitle:@""
+                                         spriteFrame:[CCSpriteFrame frameWithImageNamed:@"leftarrow.png"]];
+    leftButton.scale = 0.5f;
+    leftButton.position = ccp(leftButton.boundingBox.size.width/2,
+                              self.contentSize.height - leftButton.boundingBox.size.height/2);
+    [self addChild:leftButton];
+    rightButton = [CCButton buttonWithTitle:@""
+                               spriteFrame:[CCSpriteFrame frameWithImageNamed:@"rightarrow.png"]];
+    rightButton.scale = 0.5f;
+    rightButton.position = ccp(self.contentSize.width - rightButton.boundingBox.size.width/2,
+                              self.contentSize.height - rightButton.boundingBox.size.height/2);
+    [self addChild:rightButton];
     
 	return self;
 }
 
 - (void)update:(CCTime)dt
 {
+    if (leftButton.touchInside || rightButton.touchInside)
+    {
+        if (_robot.state == ROBOT_IDLE)
+        {
+            _robot.state = ROBOT_RUN;
+        }
+        _robot.direction = leftButton.touchInside ? YES : NO;
+    }
+    else
+    {
+        if (_robot.state == ROBOT_RUN)
+        {
+            _robot.state = ROBOT_IDLE;
+        }
+    }
     [_robot update:dt];
 }
 
-- (void)toggleRobotState
+- (CGFloat)getScreenWidth
 {
-    _robot.state = (_robot.state == ROBOT_IDLE) ? ROBOT_RUN : ROBOT_IDLE;
+    return self.contentSize.width;
+}
+
+- (CGFloat)getScreenHeight
+{
+    return self.contentSize.height;
 }
 
 @end

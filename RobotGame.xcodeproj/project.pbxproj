@@ -256,6 +256,8 @@
 		6443143619063D8800E7CA11 /* thud_sound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 6443140A19063D8800E7CA11 /* thud_sound.wav */; };
 		6443143719063D8800E7CA11 /* tiles.tga in Resources */ = {isa = PBXBuildFile; fileRef = 6443140B19063D8800E7CA11 /* tiles.tga */; };
 		6443143819063D8800E7CA11 /* tiles2.tga in Resources */ = {isa = PBXBuildFile; fileRef = 6443140C19063D8800E7CA11 /* tiles2.tga */; };
+		64B1182319082C4C006B5B0B /* leftarrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 64B1182119082C4C006B5B0B /* leftarrow.png */; };
+		64B1182419082C4C006B5B0B /* rightarrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 64B1182219082C4C006B5B0B /* rightarrow.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -742,6 +744,8 @@
 		6443140A19063D8800E7CA11 /* thud_sound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = thud_sound.wav; path = Resources/thud_sound.wav; sourceTree = "<group>"; };
 		6443140B19063D8800E7CA11 /* tiles.tga */ = {isa = PBXFileReference; lastKnownFileType = file; name = tiles.tga; path = Resources/tiles.tga; sourceTree = "<group>"; };
 		6443140C19063D8800E7CA11 /* tiles2.tga */ = {isa = PBXFileReference; lastKnownFileType = file; name = tiles2.tga; path = Resources/tiles2.tga; sourceTree = "<group>"; };
+		64B1182119082C4C006B5B0B /* leftarrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = leftarrow.png; path = Resources/leftarrow.png; sourceTree = "<group>"; };
+		64B1182219082C4C006B5B0B /* rightarrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = rightarrow.png; path = Resources/rightarrow.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -856,6 +860,8 @@
 				6443140A19063D8800E7CA11 /* thud_sound.wav */,
 				6443140B19063D8800E7CA11 /* tiles.tga */,
 				6443140C19063D8800E7CA11 /* tiles2.tga */,
+				64B1182119082C4C006B5B0B /* leftarrow.png */,
+				64B1182219082C4C006B5B0B /* rightarrow.png */,
 				644310EC1906011E00E7CA11 /* Default.png */,
 				644310EE1906011E00E7CA11 /* Default@2x.png */,
 				644310F01906011E00E7CA11 /* Default-568h@2x.png */,
@@ -1798,10 +1804,12 @@
 				6443143019063D8800E7CA11 /* robot_idle.png in Resources */,
 				6443141D19063D8800E7CA11 /* explosion.tga in Resources */,
 				6443141119063D8800E7CA11 /* 4.txt in Resources */,
+				64B1182419082C4C006B5B0B /* rightarrow.png in Resources */,
 				6443142D19063D8800E7CA11 /* oneup_sound.wav in Resources */,
 				6443142C19063D8800E7CA11 /* music.mp3 in Resources */,
 				6443143719063D8800E7CA11 /* tiles.tga in Resources */,
 				6443142819063D8800E7CA11 /* Layer7.png in Resources */,
+				64B1182319082C4C006B5B0B /* leftarrow.png in Resources */,
 				6443141F19063D8800E7CA11 /* gameover_music.mp3 in Resources */,
 				6443141619063D8800E7CA11 /* coin.png in Resources */,
 				644313741906012100E7CA11 /* LICENSE_Chipmunk.txt in Resources */,
