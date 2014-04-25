@@ -23,9 +23,8 @@
     CCSprite *background = [CCSprite spriteWithImageNamed:@"Layer1.png"];
     background.position = ccp(self.contentSize.width/2, self.contentSize.height/2);
     [self addChild:background];
-    
+    // Initialize the robot
     _robot = [[Robot alloc] initWithPosition:ccp(self.contentSize.width/2, 128.0) view:self];
-
     // Create the left and right motion controls
     leftButton = [CCButton buttonWithTitle:@""
                                          spriteFrame:[CCSpriteFrame frameWithImageNamed:@"leftarrow.png"]];
@@ -36,13 +35,22 @@
                               self.contentSize.height - leftButton.boundingBox.size.height/2);
     [self addChild:leftButton];
     rightButton = [CCButton buttonWithTitle:@""
-                               spriteFrame:[CCSpriteFrame frameWithImageNamed:@"rightarrow.png"]];
+                                spriteFrame:[CCSpriteFrame frameWithImageNamed:@"rightarrow.png"]];
     rightButton.scale = 0.5f;
     rightButton.exclusiveTouch = NO;
     rightButton.claimsUserInteraction = NO;
     rightButton.position = ccp(self.contentSize.width - rightButton.boundingBox.size.width/2,
-                              self.contentSize.height - rightButton.boundingBox.size.height/2);
+                               self.contentSize.height - rightButton.boundingBox.size.height/2);
     [self addChild:rightButton];
+    // Create the jump button
+    jumpButton = [CCButton buttonWithTitle:@""
+                               spriteFrame:[CCSpriteFrame frameWithImageNamed:@"jump.png"]];
+    jumpButton.scale = 0.8f;
+    jumpButton.exclusiveTouch = NO;
+    jumpButton.claimsUserInteraction = NO;
+    jumpButton.position = ccp(self.contentSize.width/2,
+                              self.contentSize.height - 0.6*jumpButton.boundingBox.size.height);
+    [self addChild:jumpButton];
     
 	return self;
 }
@@ -78,6 +86,11 @@
 - (BOOL)leftRightDisabled
 {
     return !(leftButton.tracking || rightButton.tracking);
+}
+
+- (BOOL)jumpEnabled
+{
+    return jumpButton.tracking;
 }
 
 @end

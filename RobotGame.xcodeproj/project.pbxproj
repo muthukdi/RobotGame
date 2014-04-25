@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		64016404190B082D008BB47B /* jump.png in Resources */ = {isa = PBXBuildFile; fileRef = 64016403190B082D008BB47B /* jump.png */; };
 		64257B3E19077AD2000E8DEC /* Renderable.m in Sources */ = {isa = PBXBuildFile; fileRef = 64257B3D19077AD2000E8DEC /* Renderable.m */; };
 		64257B4119078DB6000E8DEC /* Robot.m in Sources */ = {isa = PBXBuildFile; fileRef = 64257B4019078DB6000E8DEC /* Robot.m */; };
 		644310D31906011E00E7CA11 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 644310D21906011E00E7CA11 /* QuartzCore.framework */; };
@@ -271,6 +272,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		64016403190B082D008BB47B /* jump.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = jump.png; path = Resources/jump.png; sourceTree = "<group>"; };
 		64257B3C19077AD2000E8DEC /* Renderable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Renderable.h; path = Classes/Renderable.h; sourceTree = "<group>"; };
 		64257B3D19077AD2000E8DEC /* Renderable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Renderable.m; path = Classes/Renderable.m; sourceTree = "<group>"; };
 		64257B3F19078DB6000E8DEC /* Robot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Robot.h; sourceTree = "<group>"; };
@@ -860,6 +862,7 @@
 				6443140A19063D8800E7CA11 /* thud_sound.wav */,
 				6443140B19063D8800E7CA11 /* tiles.tga */,
 				6443140C19063D8800E7CA11 /* tiles2.tga */,
+				64016403190B082D008BB47B /* jump.png */,
 				64B1182119082C4C006B5B0B /* leftarrow.png */,
 				64B1182219082C4C006B5B0B /* rightarrow.png */,
 				644310EC1906011E00E7CA11 /* Default.png */,
@@ -1759,6 +1762,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				644310EF1906011E00E7CA11 /* Default@2x.png in Resources */,
+				64016404190B082D008BB47B /* jump.png in Resources */,
 				644311021906011E00E7CA11 /* Icon-120.png in Resources */,
 				644313061906012100E7CA11 /* LICENSE_CCBReader.txt in Resources */,
 				6443142A19063D8800E7CA11 /* meteor.png in Resources */,

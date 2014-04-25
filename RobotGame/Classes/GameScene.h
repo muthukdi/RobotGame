@@ -13,7 +13,7 @@
 @interface GameScene : CCScene <RobotDelegate>
 {
     Robot *_robot;
-    CCButton *leftButton, *rightButton;
+    CCButton *leftButton, *rightButton, *jumpButton;
 }
 
 + (GameScene *)scene;

@@ -11,9 +11,11 @@
 
 @class CCNode;
 
+#define GRAVITY 3000.0f
+
 typedef enum RobotStateTypes
 {
-    ROBOT_IDLE, ROBOT_RUN
+    ROBOT_IDLE, ROBOT_RUN, ROBOT_JUMP
     
 } RobotState;
 
@@ -25,6 +27,7 @@ typedef enum RobotStateTypes
 - (BOOL)leftEnabled;
 - (BOOL)rightEnabled;
 - (BOOL)leftRightDisabled;
+- (BOOL)jumpEnabled;
 
 @end
 
@@ -33,6 +36,8 @@ typedef enum RobotStateTypes
     id<RobotDelegate> _view;
     Renderable *_renderableIdle;
     Renderable *_renderableRun;
+    Renderable *_renderableJump;
+    float _velocityY;
 }
 
 @property (nonatomic, assign) Renderable *renderable;

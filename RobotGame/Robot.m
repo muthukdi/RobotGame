@@ -21,6 +21,7 @@
     
     _view = scene;
     _state = ROBOT_IDLE;
+    _velocityY = 1200.0f;
     _renderableIdle = [[Renderable alloc] initWithImageFile:@"robot_idle.png"
                                                    duration:1.0f
                                               numberOfCells:8];
@@ -28,6 +29,10 @@
     _renderableRun = [[Renderable alloc] initWithImageFile:@"robot_run.png"
                                                   duration:0.5f
                                              numberOfCells:6];
+    _renderableJump = [[Renderable alloc] initWithImageFile:@"robot_jump.png"
+                                                  duration:1.0f
+                                             numberOfCells:8];
+    [_view addChild:_renderableJump.sprite];
     [_view addChild:_renderableRun.sprite];
     _renderableIdle.sprite.position = position;
     _renderableRun.sprite.visible = NO;
@@ -67,6 +72,12 @@
             self.renderable = _renderableRun;
             break;
         }
+        case ROBOT_JUMP:
+        {
+            [_renderableJump rewind];
+            self.renderable = _renderableJump;
+            break;
+        }
         default:
             // shouldn't happen
             return;
@@ -79,6 +90,7 @@
     _direction = direction;
     _renderableIdle.sprite.flipX = direction;
     _renderableRun.sprite.flipX = direction;
+    _renderableJump.sprite.flipX = direction;
 }
 
 - (void)update:(CCTime)dt
@@ -100,6 +112,10 @@
                     self.direction = NO;
                 }
             }
+            if ([_view jumpEnabled])
+            {
+                self.state = ROBOT_JUMP;
+            }
             break;
         }
         case ROBOT_RUN:
@@ -107,6 +123,11 @@
             if ([_view leftRightDisabled])
             {
                 self.state = ROBOT_IDLE;
+                break;
+            }
+            if ([_view jumpEnabled])
+            {
+                self.state = ROBOT_JUMP;
                 break;
             }
             CGFloat x = _renderable.sprite.position.x;
@@ -129,10 +150,53 @@
             if (_renderable.sprite.position.x < width/2)
             {
                 _renderable.sprite.position =  ccp(width/2, y);
+                x = _renderable.sprite.position.x;
             }
             if (_renderable.sprite.position.x > [_view getScreenWidth] - width/2)
             {
                 _renderable.sprite.position =  ccp([_view getScreenWidth] - width/2, y);
+                x = _renderable.sprite.position.x;
+            }
+            break;
+        }
+        case ROBOT_JUMP:
+        {
+            CGFloat x = _renderable.sprite.position.x;
+            CGFloat y = _renderable.sprite.position.y;
+            CGFloat width = _renderable.sprite.boundingBox.size.width;
+            _velocityY -= GRAVITY * dt;
+            _renderable.sprite.position = ccp(x, y + (dt * _velocityY));
+            y = _renderable.sprite.position.y;
+            if (y < 128.0f)
+            {
+                _renderable.sprite.position = ccp(x, 128.0f);
+                self.state = ROBOT_IDLE;
+                _velocityY = 1200.0f;
+                break;
+            }
+            // Determine direction of motion
+            if ([_view leftEnabled])
+            {
+                self.direction = YES;
+                _renderable.sprite.position = ccp(x - (dt * runningSpeed), y);
+                x = _renderable.sprite.position.x;
+            }
+            if ([_view rightEnabled])
+            {
+                self.direction = NO;
+                _renderable.sprite.position = ccp(x + (dt * runningSpeed), y);
+                x = _renderable.sprite.position.x;
+            }
+            // Collisions with the edge of the screen
+            if (_renderable.sprite.position.x < width/2)
+            {
+                _renderable.sprite.position =  ccp(width/2, y);
+                x = _renderable.sprite.position.x;
+            }
+            if (_renderable.sprite.position.x > [_view getScreenWidth] - width/2)
+            {
+                _renderable.sprite.position =  ccp([_view getScreenWidth] - width/2, y);
+                x = _renderable.sprite.position.x;
             }
             break;
         }
