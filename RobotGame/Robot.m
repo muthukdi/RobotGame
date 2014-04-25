@@ -88,21 +88,44 @@
     {
         case ROBOT_IDLE:
         {
+            if ([_view leftEnabled] || [_view rightEnabled])
+            {
+                self.state = ROBOT_RUN;
+                if ([_view leftEnabled])
+                {
+                    self.direction = YES;
+                }
+                if ([_view rightEnabled])
+                {
+                    self.direction = NO;
+                }
+            }
             break;
         }
         case ROBOT_RUN:
         {
+            if ([_view leftRightDisabled])
+            {
+                self.state = ROBOT_IDLE;
+                break;
+            }
             CGFloat x = _renderable.sprite.position.x;
             CGFloat y = _renderable.sprite.position.y;
             CGFloat width = _renderable.sprite.boundingBox.size.width;
-            if (_direction)
+            // Determine direction of motion
+            if ([_view leftEnabled])
             {
+                self.direction = YES;
                 _renderable.sprite.position = ccp(x - (dt * runningSpeed), y);
+                x = _renderable.sprite.position.x;
             }
-            else
+            if ([_view rightEnabled])
             {
+                self.direction = NO;
                 _renderable.sprite.position = ccp(x + (dt * runningSpeed), y);
+                x = _renderable.sprite.position.x;
             }
+            // Collisions with the edge of the screen
             if (_renderable.sprite.position.x < width/2)
             {
                 _renderable.sprite.position =  ccp(width/2, y);

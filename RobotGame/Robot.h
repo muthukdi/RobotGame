@@ -22,6 +22,9 @@ typedef enum RobotStateTypes
 - (void)addChild:(CCNode*)child;
 - (CGFloat)getScreenWidth;
 - (CGFloat)getScreenHeight;
+- (BOOL)leftEnabled;
+- (BOOL)rightEnabled;
+- (BOOL)leftRightDisabled;
 
 @end
 
@@ -34,7 +37,7 @@ typedef enum RobotStateTypes
 
 @property (nonatomic, assign) Renderable *renderable;
 @property (nonatomic, assign) RobotState state;
-@property (nonatomic, assign) BOOL direction;
+@property (nonatomic, assign) BOOL direction;  // YES for left and NO for right
 
 - (id)initWithPosition:(CGPoint)position view:(id)scene;
 - (void)update:(CCTime)dt;

@@ -19,6 +19,7 @@
 + (GameScene *)scene;
 
 - (id)init;
-
+- (CGFloat)getScreenWidth;
+- (CGFloat)getScreenHeight;
 
 @end

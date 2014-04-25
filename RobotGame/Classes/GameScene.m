@@ -30,12 +30,16 @@
     leftButton = [CCButton buttonWithTitle:@""
                                          spriteFrame:[CCSpriteFrame frameWithImageNamed:@"leftarrow.png"]];
     leftButton.scale = 0.5f;
+    leftButton.exclusiveTouch = NO;
+    leftButton.claimsUserInteraction = NO;
     leftButton.position = ccp(leftButton.boundingBox.size.width/2,
                               self.contentSize.height - leftButton.boundingBox.size.height/2);
     [self addChild:leftButton];
     rightButton = [CCButton buttonWithTitle:@""
                                spriteFrame:[CCSpriteFrame frameWithImageNamed:@"rightarrow.png"]];
     rightButton.scale = 0.5f;
+    rightButton.exclusiveTouch = NO;
+    rightButton.claimsUserInteraction = NO;
     rightButton.position = ccp(self.contentSize.width - rightButton.boundingBox.size.width/2,
                               self.contentSize.height - rightButton.boundingBox.size.height/2);
     [self addChild:rightButton];
@@ -45,23 +49,11 @@
 
 - (void)update:(CCTime)dt
 {
-    if (leftButton.touchInside || rightButton.touchInside)
-    {
-        if (_robot.state == ROBOT_IDLE)
-        {
-            _robot.state = ROBOT_RUN;
-        }
-        _robot.direction = leftButton.touchInside ? YES : NO;
-    }
-    else
-    {
-        if (_robot.state == ROBOT_RUN)
-        {
-            _robot.state = ROBOT_IDLE;
-        }
-    }
     [_robot update:dt];
 }
+
+
+#pragma mark - RobotDelegate protocol methods
 
 - (CGFloat)getScreenWidth
 {
@@ -71,6 +63,21 @@
 - (CGFloat)getScreenHeight
 {
     return self.contentSize.height;
+}
+
+- (BOOL)leftEnabled
+{
+    return leftButton.tracking;
+}
+
+- (BOOL)rightEnabled
+{
+    return rightButton.tracking;
+}
+
+- (BOOL)leftRightDisabled
+{
+    return !(leftButton.tracking || rightButton.tracking);
 }
 
 @end
