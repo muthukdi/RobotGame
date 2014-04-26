@@ -22,6 +22,7 @@
     _view = scene;
     _state = ROBOT_IDLE;
     _velocityY = 1200.0f;
+    _jumpEnabled = YES;
     _renderableIdle = [[Renderable alloc] initWithImageFile:@"robot_idle.png"
                                                    duration:1.0f
                                               numberOfCells:8];
@@ -100,49 +101,61 @@
     {
         case ROBOT_IDLE:
         {
-            if ([_view leftEnabled] || [_view rightEnabled])
+            if ([_view leftPressed] || [_view rightPressed])
             {
                 self.state = ROBOT_RUN;
-                if ([_view leftEnabled])
+                if ([_view leftPressed])
                 {
                     self.direction = YES;
                 }
-                if ([_view rightEnabled])
+                if ([_view rightPressed])
                 {
                     self.direction = NO;
                 }
             }
-            if ([_view jumpEnabled])
+            // Don't allow consecutive jumps by keeping the
+            // JUMP button pressed
+            if ([_view jumpPressed] && _jumpEnabled)
             {
                 self.state = ROBOT_JUMP;
                 [[OALSimpleAudio sharedInstance] playEffect:@"jump_sound.wav"];
+                _jumpEnabled = NO;
+            }
+            else if (![_view jumpPressed])
+            {
+                _jumpEnabled = YES;
             }
             break;
         }
         case ROBOT_RUN:
         {
-            if ([_view leftRightDisabled])
+            if ([_view leftRightNotPressed])
             {
                 self.state = ROBOT_IDLE;
                 break;
             }
-            if ([_view jumpEnabled])
+            if ([_view jumpPressed] && _jumpEnabled)
             {
                 self.state = ROBOT_JUMP;
                 [[OALSimpleAudio sharedInstance] playEffect:@"jump_sound.wav"];
+                _jumpEnabled = NO;
                 break;
+            }
+            else if (![_view jumpPressed])
+            {
+                _jumpEnabled = YES;
             }
             CGFloat x = _renderable.sprite.position.x;
             CGFloat y = _renderable.sprite.position.y;
             CGFloat width = _renderable.sprite.boundingBox.size.width;
             // Determine direction of motion
-            if ([_view leftEnabled])
+            if ([_view leftPressed])
             {
                 self.direction = YES;
                 _renderable.sprite.position = ccp(x - (dt * runningSpeed), y);
                 x = _renderable.sprite.position.x;
             }
-            if ([_view rightEnabled])
+            if ([_view rightPressed])
             {
                 self.direction = NO;
                 _renderable.sprite.position = ccp(x + (dt * runningSpeed), y);
@@ -177,13 +190,13 @@
                 break;
             }
             // Determine direction of motion
-            if ([_view leftEnabled])
+            if ([_view leftPressed])
             {
                 self.direction = YES;
                 _renderable.sprite.position = ccp(x - (dt * runningSpeed), y);
                 x = _renderable.sprite.position.x;
             }
-            if ([_view rightEnabled])
+            if ([_view rightPressed])
             {
                 self.direction = NO;
                 _renderable.sprite.position = ccp(x + (dt * runningSpeed), y);

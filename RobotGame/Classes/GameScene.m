@@ -20,6 +20,7 @@
     self = [super init];
     if (!self) return(nil);
     
+    // Play the background music
     [[OALSimpleAudio sharedInstance] playBg:@"music.mp3" volume:0.3f pan:0.0f loop:YES];
     CCSprite *background = [CCSprite spriteWithImageNamed:@"Layer1.png"];
     background.position = ccp(self.contentSize.width/2, self.contentSize.height/2);
@@ -74,22 +75,22 @@
     return self.contentSize.height;
 }
 
-- (BOOL)leftEnabled
+- (BOOL)leftPressed
 {
     return leftButton.tracking;
 }
 
-- (BOOL)rightEnabled
+- (BOOL)rightPressed
 {
     return rightButton.tracking;
 }
 
-- (BOOL)leftRightDisabled
+- (BOOL)leftRightNotPressed
 {
     return !(leftButton.tracking || rightButton.tracking);
 }
 
-- (BOOL)jumpEnabled
+- (BOOL)jumpPressed
 {
     return jumpButton.tracking;
 }

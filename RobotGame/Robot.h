@@ -24,10 +24,10 @@ typedef enum RobotStateTypes
 - (void)addChild:(CCNode*)child;
 - (CGFloat)getScreenWidth;
 - (CGFloat)getScreenHeight;
-- (BOOL)leftEnabled;
-- (BOOL)rightEnabled;
-- (BOOL)leftRightDisabled;
-- (BOOL)jumpEnabled;
+- (BOOL)leftPressed;
+- (BOOL)rightPressed;
+- (BOOL)leftRightNotPressed;
+- (BOOL)jumpPressed;
 
 @end
 
@@ -38,6 +38,7 @@ typedef enum RobotStateTypes
     Renderable *_renderableRun;
     Renderable *_renderableJump;
     float _velocityY;
+    BOOL _jumpEnabled;
 }
 
 @property (nonatomic, assign) Renderable *renderable;
