@@ -115,6 +115,7 @@
             if ([_view jumpEnabled])
             {
                 self.state = ROBOT_JUMP;
+                [[OALSimpleAudio sharedInstance] playEffect:@"jump_sound.wav"];
             }
             break;
         }
@@ -128,6 +129,7 @@
             if ([_view jumpEnabled])
             {
                 self.state = ROBOT_JUMP;
+                [[OALSimpleAudio sharedInstance] playEffect:@"jump_sound.wav"];
                 break;
             }
             CGFloat x = _renderable.sprite.position.x;
