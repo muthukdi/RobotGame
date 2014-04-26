@@ -38,6 +38,7 @@
     _renderableIdle.sprite.position = position;
     _renderableRun.sprite.visible = NO;
     _renderable = _renderableIdle;
+    _width = _renderable.sprite.boundingBox.size.width;
     
     return self;
 }
@@ -113,8 +114,8 @@
                     self.direction = NO;
                 }
             }
-            // Don't allow consecutive jumps by keeping the
-            // JUMP button pressed
+            // Don't allow repeated jumps (disable it until
+            // the button is released)
             if ([_view jumpPressed] && _jumpEnabled)
             {
                 self.state = ROBOT_JUMP;
@@ -129,11 +130,15 @@
         }
         case ROBOT_RUN:
         {
+            CGFloat x = _renderable.sprite.position.x;
+            CGFloat y = _renderable.sprite.position.y;
             if ([_view leftRightNotPressed])
             {
                 self.state = ROBOT_IDLE;
                 break;
             }
+            // Don't allow repeated jumps (disable it until
+            // the button is released)
             if ([_view jumpPressed] && _jumpEnabled)
             {
                 self.state = ROBOT_JUMP;
@@ -145,9 +150,6 @@
             {
                 _jumpEnabled = YES;
             }
-            CGFloat x = _renderable.sprite.position.x;
-            CGFloat y = _renderable.sprite.position.y;
-            CGFloat width = _renderable.sprite.boundingBox.size.width;
             // Determine direction of motion
             if ([_view leftPressed])
             {
@@ -162,14 +164,14 @@
                 x = _renderable.sprite.position.x;
             }
             // Collisions with the edge of the screen
-            if (_renderable.sprite.position.x < width/2)
+            if (x < _width/2)
             {
-                _renderable.sprite.position =  ccp(width/2, y);
+                _renderable.sprite.position =  ccp(_width/2, y);
                 x = _renderable.sprite.position.x;
             }
-            if (_renderable.sprite.position.x > [_view getScreenWidth] - width/2)
+            if (x > [_view getScreenWidth] - _width/2)
             {
-                _renderable.sprite.position =  ccp([_view getScreenWidth] - width/2, y);
+                _renderable.sprite.position =  ccp([_view getScreenWidth] - _width/2, y);
                 x = _renderable.sprite.position.x;
             }
             break;
@@ -178,7 +180,6 @@
         {
             CGFloat x = _renderable.sprite.position.x;
             CGFloat y = _renderable.sprite.position.y;
-            CGFloat width = _renderable.sprite.boundingBox.size.width;
             _velocityY -= GRAVITY * dt;
             _renderable.sprite.position = ccp(x, y + (dt * _velocityY));
             y = _renderable.sprite.position.y;
@@ -203,14 +204,14 @@
                 x = _renderable.sprite.position.x;
             }
             // Collisions with the edge of the screen
-            if (_renderable.sprite.position.x < width/2)
+            if (x < _width/2)
             {
-                _renderable.sprite.position =  ccp(width/2, y);
+                _renderable.sprite.position =  ccp(_width/2, y);
                 x = _renderable.sprite.position.x;
             }
-            if (_renderable.sprite.position.x > [_view getScreenWidth] - width/2)
+            if (x > [_view getScreenWidth] - _width/2)
             {
-                _renderable.sprite.position =  ccp([_view getScreenWidth] - width/2, y);
+                _renderable.sprite.position =  ccp([_view getScreenWidth] - _width/2, y);
                 x = _renderable.sprite.position.x;
             }
             break;

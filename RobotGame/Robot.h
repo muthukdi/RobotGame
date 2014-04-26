@@ -33,12 +33,13 @@ typedef enum RobotStateTypes
 
 @interface Robot : NSObject
 {
-    id<RobotDelegate> _view;
+    id<RobotDelegate> _view;        // the scene that owns this robot
     Renderable *_renderableIdle;
     Renderable *_renderableRun;
     Renderable *_renderableJump;
-    float _velocityY;
-    BOOL _jumpEnabled;
+    float _velocityY;               // vertical velocity
+    BOOL _jumpEnabled;              // a flag to prevent repeated jumps
+    CGFloat _width;                 // robot's width
 }
 
 @property (nonatomic, assign) Renderable *renderable;
