@@ -61,15 +61,23 @@
     rightButton.position = ccp(self.contentSize.width - rightButton.boundingBox.size.width/2,
                                self.contentSize.height - rightButton.boundingBox.size.height/2);
     [self addChild:rightButton];
-    // Create the jump button
-    jumpButton = [CCButton buttonWithTitle:@""
+    // Create the jump buttons
+    jumpButton1 = [CCButton buttonWithTitle:@""
                                spriteFrame:[CCSpriteFrame frameWithImageNamed:@"jump.png"]];
-    jumpButton.scale = 0.8f;
-    jumpButton.exclusiveTouch = NO;
-    jumpButton.claimsUserInteraction = NO;
-    jumpButton.position = ccp(self.contentSize.width/2,
-                              self.contentSize.height - 0.6*jumpButton.boundingBox.size.height);
-    [self addChild:jumpButton];
+    jumpButton1.scale = 0.5f;
+    jumpButton1.exclusiveTouch = NO;
+    jumpButton1.claimsUserInteraction = NO;
+    jumpButton1.position = ccp(jumpButton1.boundingBox.size.width/2,
+                              self.contentSize.height - 3*jumpButton1.boundingBox.size.height/2);
+    [self addChild:jumpButton1];
+    jumpButton2 = [CCButton buttonWithTitle:@""
+                                spriteFrame:[CCSpriteFrame frameWithImageNamed:@"jump.png"]];
+    jumpButton2.scale = 0.5f;
+    jumpButton2.exclusiveTouch = NO;
+    jumpButton2.claimsUserInteraction = NO;
+    jumpButton2.position = ccp(self.contentSize.width - jumpButton2.boundingBox.size.width/2,
+                               self.contentSize.height - 3*jumpButton2.boundingBox.size.height/2);
+    [self addChild:jumpButton2];
     
 	return self;
 }
@@ -118,7 +126,7 @@
 
 - (BOOL)jumpPressed
 {
-    return jumpButton.tracking;
+    return jumpButton1.tracking || jumpButton2.tracking;
 }
 
 - (CCTime)getTimeElapsed
