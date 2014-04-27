@@ -23,7 +23,7 @@
     // Initialize the time
     _time = 0.0;
     // Play the background music
-    //[[OALSimpleAudio sharedInstance] playBg:@"music.mp3" volume:0.3f pan:0.0f loop:YES];
+    [[OALSimpleAudio sharedInstance] playBg:@"music.mp3" volume:0.3f pan:0.0f loop:YES];
     CCSprite *background = [CCSprite spriteWithImageNamed:@"Layer1.png"];
     background.position = ccp(self.contentSize.width/2, self.contentSize.height/2);
     [self addChild:background];
