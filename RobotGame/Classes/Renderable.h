@@ -16,10 +16,10 @@
     int _cellWidth;
     int _cellHeight;
     float _time;
-    float _duration;
 }
 
 @property (nonatomic, readonly) CCSprite *sprite;
+@property (nonatomic, readonly) float duration;
 
 - (id)initWithImageFile:(NSString *)imageFile duration:(float)duration numberOfCells:(int)numCells;
 - (void)rewind;

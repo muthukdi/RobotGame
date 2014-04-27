@@ -8,8 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		64016404190B082D008BB47B /* jump.png in Resources */ = {isa = PBXBuildFile; fileRef = 64016403190B082D008BB47B /* jump.png */; };
+		64138441190CD85700ADCDAD /* Crawler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6413843E190CD85700ADCDAD /* Crawler.m */; };
+		64138442190CD85700ADCDAD /* Robot.m in Sources */ = {isa = PBXBuildFile; fileRef = 64138440190CD85700ADCDAD /* Robot.m */; };
 		64257B3E19077AD2000E8DEC /* Renderable.m in Sources */ = {isa = PBXBuildFile; fileRef = 64257B3D19077AD2000E8DEC /* Renderable.m */; };
-		64257B4119078DB6000E8DEC /* Robot.m in Sources */ = {isa = PBXBuildFile; fileRef = 64257B4019078DB6000E8DEC /* Robot.m */; };
 		644310D31906011E00E7CA11 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 644310D21906011E00E7CA11 /* QuartzCore.framework */; };
 		644310D51906011E00E7CA11 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 644310D41906011E00E7CA11 /* OpenGLES.framework */; };
 		644310D71906011E00E7CA11 /* OpenAL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 644310D61906011E00E7CA11 /* OpenAL.framework */; };
@@ -273,10 +274,12 @@
 
 /* Begin PBXFileReference section */
 		64016403190B082D008BB47B /* jump.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = jump.png; path = Resources/jump.png; sourceTree = "<group>"; };
+		6413843D190CD85700ADCDAD /* Crawler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Crawler.h; path = Classes/Crawler.h; sourceTree = "<group>"; };
+		6413843E190CD85700ADCDAD /* Crawler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Crawler.m; path = Classes/Crawler.m; sourceTree = "<group>"; };
+		6413843F190CD85700ADCDAD /* Robot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Robot.h; path = Classes/Robot.h; sourceTree = "<group>"; };
+		64138440190CD85700ADCDAD /* Robot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Robot.m; path = Classes/Robot.m; sourceTree = "<group>"; };
 		64257B3C19077AD2000E8DEC /* Renderable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Renderable.h; path = Classes/Renderable.h; sourceTree = "<group>"; };
 		64257B3D19077AD2000E8DEC /* Renderable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Renderable.m; path = Classes/Renderable.m; sourceTree = "<group>"; };
-		64257B3F19078DB6000E8DEC /* Robot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Robot.h; sourceTree = "<group>"; };
-		64257B4019078DB6000E8DEC /* Robot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Robot.m; sourceTree = "<group>"; };
 		644310CF1906011E00E7CA11 /* RobotGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RobotGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		644310D21906011E00E7CA11 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		644310D41906011E00E7CA11 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
@@ -1685,8 +1688,10 @@
 				6443137B1906012100E7CA11 /* AppDelegate.m */,
 				644313801906012100E7CA11 /* GameScene.h */,
 				644313811906012100E7CA11 /* GameScene.m */,
-				64257B3F19078DB6000E8DEC /* Robot.h */,
-				64257B4019078DB6000E8DEC /* Robot.m */,
+				6413843D190CD85700ADCDAD /* Crawler.h */,
+				6413843E190CD85700ADCDAD /* Crawler.m */,
+				6413843F190CD85700ADCDAD /* Robot.h */,
+				64138440190CD85700ADCDAD /* Robot.m */,
 				64257B3C19077AD2000E8DEC /* Renderable.h */,
 				64257B3D19077AD2000E8DEC /* Renderable.m */,
 			);
@@ -1865,6 +1870,7 @@
 				644312101906012000E7CA11 /* CCDirectorMac.m in Sources */,
 				644311441906011E00E7CA11 /* ccDeprecated.m in Sources */,
 				644312731906012000E7CA11 /* ALContext.m in Sources */,
+				64138442190CD85700ADCDAD /* Robot.m in Sources */,
 				6443114F1906011F00E7CA11 /* CCDrawNode.m in Sources */,
 				644312201906012000E7CA11 /* CCFileUtils.m in Sources */,
 				644312A31906012000E7CA11 /* OALTools.m in Sources */,
@@ -1888,7 +1894,6 @@
 				6443112E1906011E00E7CA11 /* CCActionTween.m in Sources */,
 				6443129C1906012000E7CA11 /* NSMutableDictionary+WeakReferences.m in Sources */,
 				644311791906011F00E7CA11 /* CCNode+Debug.m in Sources */,
-				64257B4119078DB6000E8DEC /* Robot.m in Sources */,
 				644311321906011E00E7CA11 /* CCAnimation.m in Sources */,
 				644312DB1906012100E7CA11 /* mat3.c in Sources */,
 				644311E71906011F00E7CA11 /* CCTiledMap.m in Sources */,
@@ -1977,6 +1982,7 @@
 				644311AD1906011F00E7CA11 /* CCScene.m in Sources */,
 				644311DB1906011F00E7CA11 /* CCTexture.m in Sources */,
 				6443126D1906012000E7CA11 /* ALCaptureDevice.m in Sources */,
+				64138441190CD85700ADCDAD /* Crawler.m in Sources */,
 				644311A91906011F00E7CA11 /* CCResponderManager.m in Sources */,
 				644311411906011E00E7CA11 /* CCConfiguration.m in Sources */,
 				644312841906012000E7CA11 /* ALWrapper.m in Sources */,

@@ -20,16 +20,33 @@
     self = [super init];
     if (!self) return(nil);
     
+    // Initialize the time
+    _time = 0.0;
     // Play the background music
-    [[OALSimpleAudio sharedInstance] playBg:@"music.mp3" volume:0.3f pan:0.0f loop:YES];
+    //[[OALSimpleAudio sharedInstance] playBg:@"music.mp3" volume:0.3f pan:0.0f loop:YES];
     CCSprite *background = [CCSprite spriteWithImageNamed:@"Layer1.png"];
     background.position = ccp(self.contentSize.width/2, self.contentSize.height/2);
     [self addChild:background];
     // Initialize the robot
     _robot = [[Robot alloc] initWithPosition:ccp(self.contentSize.width/2, 128.0) view:self];
+    // Initialize the crawlers with random configurations
+    _crawlers = [NSMutableArray arrayWithCapacity:4];
+    float randomX;
+    BOOL randomDirection;
+    float randomScale;
+    for (int i = 0; i < 4; i++)
+    {
+        randomX = (float)(arc4random() % ((int)(self.contentSize.width) - 128) + 64);
+        randomDirection = (BOOL)(arc4random() % 2);
+        randomScale = (float)(arc4random() % 16 + 5)/10.0f;
+        [_crawlers addObject:[[Crawler alloc] initWithPosition:ccp(randomX, 128.0)
+                                                          view:self
+                                                     direction:randomDirection
+                                                    speedScale:randomScale]];
+    }
     // Create the left and right motion controls
     leftButton = [CCButton buttonWithTitle:@""
-                                         spriteFrame:[CCSpriteFrame frameWithImageNamed:@"leftarrow.png"]];
+                               spriteFrame:[CCSpriteFrame frameWithImageNamed:@"leftarrow.png"]];
     leftButton.scale = 0.5f;
     leftButton.exclusiveTouch = NO;
     leftButton.claimsUserInteraction = NO;
@@ -59,11 +76,20 @@
 
 - (void)update:(CCTime)dt
 {
+    // Increment the time elapsed
+    _time += dt;
+    // Update the robot
     [_robot update:dt];
+    
+    // Update the crawlers
+    for (Crawler *crawler in _crawlers)
+    {
+        [crawler update:dt];
+    }
 }
 
 
-#pragma mark - RobotDelegate protocol methods
+#pragma mark - GameDelegate protocol methods
 
 - (CGFloat)getScreenWidth
 {
@@ -93,6 +119,11 @@
 - (BOOL)jumpPressed
 {
     return jumpButton.tracking;
+}
+
+- (CCTime)getTimeElapsed
+{
+    return _time;
 }
 
 @end

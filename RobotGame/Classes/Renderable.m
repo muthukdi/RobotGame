@@ -11,6 +11,7 @@
 @implementation Renderable
 
 @synthesize sprite = _sprite;
+@synthesize duration = _duration;
 
 - (id)initWithImageFile:(NSString *)imageFile duration:(float)duration numberOfCells:(int)numCells
 {

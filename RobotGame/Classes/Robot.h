@@ -8,8 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import "Renderable.h"
-
-@class CCNode;
+#import "AppDelegate.h"
 
 #define GRAVITY 3000.0f
 
@@ -19,21 +18,9 @@ typedef enum RobotStateTypes
     
 } RobotState;
 
-@protocol RobotDelegate
-
-- (void)addChild:(CCNode*)child;
-- (CGFloat)getScreenWidth;
-- (CGFloat)getScreenHeight;
-- (BOOL)leftPressed;
-- (BOOL)rightPressed;
-- (BOOL)leftRightNotPressed;
-- (BOOL)jumpPressed;
-
-@end
-
 @interface Robot : NSObject
 {
-    id<RobotDelegate> _view;        // the scene that owns this robot
+    id<GameDelegate> _view;        // the scene that owns this robot
     Renderable *_renderableIdle;
     Renderable *_renderableRun;
     Renderable *_renderableJump;

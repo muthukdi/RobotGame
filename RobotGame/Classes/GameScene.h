@@ -9,17 +9,18 @@
 #import "cocos2d.h"
 #import "cocos2d-ui.h"
 #import "Robot.h"
+#import "Crawler.h"
 
-@interface GameScene : CCScene <RobotDelegate>
+@interface GameScene : CCScene <GameDelegate>
 {
     Robot *_robot;
     CCButton *leftButton, *rightButton, *jumpButton;
+    NSMutableArray *_crawlers;
+    CCTime _time;  // time (in seconds) since the game started
 }
 
 + (GameScene *)scene;
 
 - (id)init;
-- (CGFloat)getScreenWidth;
-- (CGFloat)getScreenHeight;
 
 @end

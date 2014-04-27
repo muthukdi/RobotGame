@@ -20,24 +20,26 @@
     if (!self) return(nil);
     
     _view = scene;
-    _state = ROBOT_IDLE;
-    _velocityY = 1200.0f;
     _jumpEnabled = YES;
     _renderableIdle = [[Renderable alloc] initWithImageFile:@"robot_idle.png"
                                                    duration:1.0f
                                               numberOfCells:8];
-    [_view addChild:_renderableIdle.sprite];
     _renderableRun = [[Renderable alloc] initWithImageFile:@"robot_run.png"
                                                   duration:0.5f
                                              numberOfCells:6];
     _renderableJump = [[Renderable alloc] initWithImageFile:@"robot_jump.png"
                                                   duration:1.0f
                                              numberOfCells:8];
+    [_view addChild:_renderableIdle.sprite];
     [_view addChild:_renderableJump.sprite];
     [_view addChild:_renderableRun.sprite];
+    
+    // Configure the initial state
+    _state = ROBOT_IDLE;
     _renderableIdle.sprite.position = position;
     _renderableRun.sprite.visible = NO;
     _renderable = _renderableIdle;
+    _velocityY = 1200.0f;
     _width = _renderable.sprite.boundingBox.size.width;
     
     return self;
