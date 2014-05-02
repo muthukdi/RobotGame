@@ -14,7 +14,7 @@
 
 typedef enum CrawlerStateTypes
 {
-    CRAWLER_IDLE, CRAWLER_WALK, CRAWLER_DIE
+    CRAWLER_IDLE, CRAWLER_WALK, CRAWLER_DYING, CRAWLER_DEAD
     
 } CrawlerState;
 
@@ -24,14 +24,18 @@ typedef enum CrawlerStateTypes
     Renderable *_renderableIdle;
     Renderable *_renderableWalk;
     Renderable *_renderableDie;
-    CGFloat _width;                 // crawler's width
     float _walkingSpeedScale;
     CCTime _nextThinkTime;          // time to run next round of AI "thinking"
+    CCTime _timeToDeath;
 }
 
-@property (nonatomic, assign) Renderable *renderable;
+@property (nonatomic, strong) Renderable *renderable;
 @property (nonatomic, assign) CrawlerState state;
 @property (nonatomic, assign) BOOL direction;  // YES for left and NO for right
+@property (nonatomic, assign) CGPoint position;
+@property (nonatomic, assign) CGFloat width;
+@property (nonatomic, assign) CGFloat height;
+@property (nonatomic, strong) CCSprite *collider;
 
 - (id)initWithPosition:(CGPoint)position view:(id)scene
              direction:(BOOL)direction

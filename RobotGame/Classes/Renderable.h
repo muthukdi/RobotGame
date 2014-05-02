@@ -19,9 +19,9 @@
 }
 
 @property (nonatomic, readonly) CCSprite *sprite;
-@property (nonatomic, readonly) float duration;
+@property (nonatomic, readonly) CCTime duration;
 
-- (id)initWithImageFile:(NSString *)imageFile duration:(float)duration numberOfCells:(int)numCells;
+- (id)initWithImageFile:(NSString *)imageFile duration:(CCTime)duration numberOfCells:(int)numCells;
 - (void)rewind;
 - (void)animate:(CCTime)dt;
 

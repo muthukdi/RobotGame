@@ -24,16 +24,20 @@ typedef enum RobotStateTypes
     Renderable *_renderableIdle;
     Renderable *_renderableRun;
     Renderable *_renderableJump;
-    float _velocityY;               // vertical velocity
     BOOL _jumpEnabled;              // a flag to prevent repeated jumps
-    CGFloat _width;                 // robot's width
 }
 
-@property (nonatomic, assign) Renderable *renderable;
+@property (nonatomic, strong) Renderable *renderable;
 @property (nonatomic, assign) RobotState state;
 @property (nonatomic, assign) BOOL direction;  // YES for left and NO for right
+@property (nonatomic, assign) float velocityY;
+@property (nonatomic, assign) CGPoint position;
+@property (nonatomic, assign) CGFloat width;
+@property (nonatomic, assign) CGFloat height;
+@property (nonatomic, strong) CCSprite *collider;
 
 - (id)initWithPosition:(CGPoint)position view:(id)scene;
+- (void)bounce:(float)velocity;
 - (void)update:(CCTime)dt;
 
 @end

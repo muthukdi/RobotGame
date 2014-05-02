@@ -13,6 +13,10 @@
 @synthesize renderable = _renderable;
 @synthesize state = _state;
 @synthesize direction = _direction;
+@synthesize position = _position;
+@synthesize width = _width;
+@synthesize height = _height;
+@synthesize collider = _collider;
 
 - (id)initWithPosition:(CGPoint)position view:(id)scene direction:(BOOL)direction speedScale:(float)speedScale
 {
@@ -28,7 +32,14 @@
                                              numberOfCells:8];
     _renderableDie = [[Renderable alloc] initWithImageFile:@"crawler_die.png"
                                                    duration:1.0f
-                                              numberOfCells:7];
+                                              numberOfCells:8];
+    // Initialize collider
+    _collider = [CCSprite spriteWithTexture:[CCTexture textureWithFile:@"yellow.png"]
+                                       rect:CGRectMake(0.0f, 0.0f, 100.0f, 70.0f)];
+    _collider.opacity = 0.3f;
+    _collider.visible = NO;
+    [_view addChild:_collider];
+    // Add the sprites to the game scene
     [_view addChild:_renderableIdle.sprite];
     [_view addChild:_renderableWalk.sprite];
     [_view addChild:_renderableDie.sprite];
@@ -37,15 +48,15 @@
     if ((BOOL)(arc4random() % 2))
     {
         _state = CRAWLER_WALK;
-        _renderableWalk.sprite.position = position;
         _renderableIdle.sprite.visible = NO;
+        _renderableDie.sprite.visible = NO;
         _renderable = _renderableWalk;
     }
     else
     {
         _state = CRAWLER_IDLE;
-        _renderableIdle.sprite.position = position;
         _renderableWalk.sprite.visible = NO;
+        _renderableDie.sprite.visible = NO;
         _renderable = _renderableIdle;
     }
     _direction = direction;
@@ -54,6 +65,11 @@
     _renderableDie.sprite.flipX = !direction;
     _walkingSpeedScale = speedScale;
     _width = _renderable.sprite.boundingBox.size.width;
+    _height = _renderable.sprite.boundingBox.size.height;
+    _position = position;
+    _renderable.sprite.position = position;
+    _collider.position = ccp(position.x, position.y - 1.33*_collider.boundingBox.size.height);
+    _timeToDeath = _renderableDie.duration;
     
     return self;
 }
@@ -94,10 +110,14 @@
             _nextThinkTime = [_view getTimeElapsed] + numCycles * _renderableWalk.duration;
             break;
         }
-        case CRAWLER_DIE:
+        case CRAWLER_DYING:
         {
             [_renderableDie rewind];
             self.renderable = _renderableDie;
+            break;
+        }
+        case CRAWLER_DEAD:
+        {
             break;
         }
         default:
@@ -113,6 +133,31 @@
     _renderableIdle.sprite.flipX = !direction;
     _renderableWalk.sprite.flipX = !direction;
     _renderableDie.sprite.flipX = !direction;
+}
+
+- (void)setPosition:(CGPoint)position
+{
+    _position = position;
+    _renderable.sprite.position = position;
+    _collider.position = ccp(position.x, position.y - 1.33*_collider.boundingBox.size.height);
+}
+
+// Return the position of the collider (for external use only)
+- (CGPoint)position
+{
+    return _collider.position;
+}
+
+// Return the width of the collider (for external use only)
+- (CGFloat)width
+{
+    return _collider.boundingBox.size.width;
+}
+
+// Return the height of the collider (for external use only)
+- (CGFloat)height
+{
+    return _collider.boundingBox.size.height;
 }
 
 - (void)update:(CCTime)dt
@@ -139,45 +184,56 @@
             }
             else
             {
-                CGFloat x = _renderable.sprite.position.x;
-                CGFloat y = _renderable.sprite.position.y;
                 // Move in the current direction
                 if (self.direction)
                 {
-                    _renderable.sprite.position = ccp(x - (dt * _walkingSpeedScale * WALKING_SPEED), y);
-                    x = _renderable.sprite.position.x;
+                    self.position = ccp(_position.x - (dt * _walkingSpeedScale * WALKING_SPEED), _position.y);
                 }
                 else
                 {
-                    _renderable.sprite.position = ccp(x + (dt * _walkingSpeedScale * WALKING_SPEED), y);
-                    x = _renderable.sprite.position.x;
+                    self.position = ccp(_position.x + (dt * _walkingSpeedScale * WALKING_SPEED), _position.y);
                 }
                 // Collisions with the edge of the screen
-                if (x < _width/2)
+                if (_position.x < _width/2)
                 {
                     self.direction = NO;
-                    _renderable.sprite.position =  ccp(_width/2, y);
-                    x = _renderable.sprite.position.x;
+                    self.position =  ccp(_width/2, _position.y);
                 }
-                if (x > [_view getScreenWidth] - _width/2)
+                if (_position.x > [_view getScreenWidth] - _width/2)
                 {
                     self.direction = YES;
-                    _renderable.sprite.position =  ccp([_view getScreenWidth] - _width/2, y);
-                    x = _renderable.sprite.position.x;
+                    self.position =  ccp([_view getScreenWidth] - _width/2, _position.y);
                 }
                 [_renderable animate:dt * _walkingSpeedScale];
             }
             break;
         }
-        case CRAWLER_DIE:
+        case CRAWLER_DYING:
         {
             [_renderable animate:dt];
+            _timeToDeath -= dt;
+            // I should be adding a "loopable" property to the
+            // renderable instead of having to hardcode this (0.2f)
+            if (_timeToDeath <= 0.2f)
+            {
+                self.state = CRAWLER_DEAD;
+            }
             break;
         }
         default:
             // Shouldn't happen
             break;
     }
+}
+
+- (void)dealloc
+{
+    // Need to remove these explicitly since the scene still
+    // has a reference to them
+    [_view removeChild:_renderableIdle.sprite cleanup:YES];
+    [_view removeChild:_renderableWalk.sprite cleanup:YES];
+    [_view removeChild:_renderableDie.sprite cleanup:YES];
+    [_view removeChild:_collider cleanup:YES];
 }
 
 @end

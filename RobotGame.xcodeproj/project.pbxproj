@@ -10,6 +10,7 @@
 		64016404190B082D008BB47B /* jump.png in Resources */ = {isa = PBXBuildFile; fileRef = 64016403190B082D008BB47B /* jump.png */; };
 		64138441190CD85700ADCDAD /* Crawler.m in Sources */ = {isa = PBXBuildFile; fileRef = 6413843E190CD85700ADCDAD /* Crawler.m */; };
 		64138442190CD85700ADCDAD /* Robot.m in Sources */ = {isa = PBXBuildFile; fileRef = 64138440190CD85700ADCDAD /* Robot.m */; };
+		641C2D84190F13CF00283D5A /* yellow.png in Resources */ = {isa = PBXBuildFile; fileRef = 641C2D83190F13CF00283D5A /* yellow.png */; };
 		64257B3E19077AD2000E8DEC /* Renderable.m in Sources */ = {isa = PBXBuildFile; fileRef = 64257B3D19077AD2000E8DEC /* Renderable.m */; };
 		644310D31906011E00E7CA11 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 644310D21906011E00E7CA11 /* QuartzCore.framework */; };
 		644310D51906011E00E7CA11 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 644310D41906011E00E7CA11 /* OpenGLES.framework */; };
@@ -260,6 +261,7 @@
 		6443143819063D8800E7CA11 /* tiles2.tga in Resources */ = {isa = PBXBuildFile; fileRef = 6443140C19063D8800E7CA11 /* tiles2.tga */; };
 		64B1182319082C4C006B5B0B /* leftarrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 64B1182119082C4C006B5B0B /* leftarrow.png */; };
 		64B1182419082C4C006B5B0B /* rightarrow.png in Resources */ = {isa = PBXBuildFile; fileRef = 64B1182219082C4C006B5B0B /* rightarrow.png */; };
+		64E919EF19134547003B9D62 /* collision.png in Resources */ = {isa = PBXBuildFile; fileRef = 64E919EE19134547003B9D62 /* collision.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -278,6 +280,7 @@
 		6413843E190CD85700ADCDAD /* Crawler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Crawler.m; path = Classes/Crawler.m; sourceTree = "<group>"; };
 		6413843F190CD85700ADCDAD /* Robot.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Robot.h; path = Classes/Robot.h; sourceTree = "<group>"; };
 		64138440190CD85700ADCDAD /* Robot.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Robot.m; path = Classes/Robot.m; sourceTree = "<group>"; };
+		641C2D83190F13CF00283D5A /* yellow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = yellow.png; path = Resources/yellow.png; sourceTree = "<group>"; };
 		64257B3C19077AD2000E8DEC /* Renderable.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Renderable.h; path = Classes/Renderable.h; sourceTree = "<group>"; };
 		64257B3D19077AD2000E8DEC /* Renderable.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Renderable.m; path = Classes/Renderable.m; sourceTree = "<group>"; };
 		644310CF1906011E00E7CA11 /* RobotGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RobotGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -751,6 +754,7 @@
 		6443140C19063D8800E7CA11 /* tiles2.tga */ = {isa = PBXFileReference; lastKnownFileType = file; name = tiles2.tga; path = Resources/tiles2.tga; sourceTree = "<group>"; };
 		64B1182119082C4C006B5B0B /* leftarrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = leftarrow.png; path = Resources/leftarrow.png; sourceTree = "<group>"; };
 		64B1182219082C4C006B5B0B /* rightarrow.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = rightarrow.png; path = Resources/rightarrow.png; sourceTree = "<group>"; };
+		64E919EE19134547003B9D62 /* collision.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = collision.png; path = Resources/collision.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -868,6 +872,8 @@
 				64016403190B082D008BB47B /* jump.png */,
 				64B1182119082C4C006B5B0B /* leftarrow.png */,
 				64B1182219082C4C006B5B0B /* rightarrow.png */,
+				64E919EE19134547003B9D62 /* collision.png */,
+				641C2D83190F13CF00283D5A /* yellow.png */,
 				644310EC1906011E00E7CA11 /* Default.png */,
 				644310EE1906011E00E7CA11 /* Default@2x.png */,
 				644310F01906011E00E7CA11 /* Default-568h@2x.png */,
@@ -1773,6 +1779,7 @@
 				6443142A19063D8800E7CA11 /* meteor.png in Resources */,
 				6443140D19063D8800E7CA11 /* 0.txt in Resources */,
 				644310F81906011E00E7CA11 /* Icon@2x.png in Resources */,
+				641C2D84190F13CF00283D5A /* yellow.png in Resources */,
 				6443141E19063D8800E7CA11 /* flagpole.png in Resources */,
 				6443110A1906011E00E7CA11 /* Icon-Small@2x.png in Resources */,
 				6443143219063D8800E7CA11 /* robot_run.png in Resources */,
@@ -1825,6 +1832,7 @@
 				6443110E1906011E00E7CA11 /* Icon-Spotlight-iOS7@2x.png in Resources */,
 				6443142019063D8800E7CA11 /* gameover_music.wav in Resources */,
 				6443143419063D8800E7CA11 /* stomp_sound_nokill.wav in Resources */,
+				64E919EF19134547003B9D62 /* collision.png in Resources */,
 				644310FE1906011E00E7CA11 /* Icon-76.png in Resources */,
 				6443141B19063D8800E7CA11 /* crawler_walk.png in Resources */,
 				6443142719063D8800E7CA11 /* Layer6.png in Resources */,
@@ -2131,6 +2139,7 @@
 					"\"$(SRCROOT)/$(PROJECT_NAME)/Libraries/Chipmunk/objectivec/include\"",
 				);
 				INFOPLIST_FILE = RobotGame/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = (
 					"-lz",
 					"-lsqlite3",
@@ -2155,6 +2164,7 @@
 					"\"$(SRCROOT)/$(PROJECT_NAME)/Libraries/Chipmunk/objectivec/include\"",
 				);
 				INFOPLIST_FILE = RobotGame/Resources/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
 				OTHER_LDFLAGS = (
 					"-lz",
 					"-lsqlite3",

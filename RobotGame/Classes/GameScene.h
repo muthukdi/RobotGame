@@ -14,7 +14,7 @@
 @interface GameScene : CCScene <GameDelegate>
 {
     Robot *_robot;
-    CCButton *leftButton, *rightButton, *jumpButton1, *jumpButton2;
+    CCButton *leftButton, *rightButton, *jumpButton1, *jumpButton2, *collisionButton;
     NSMutableArray *_crawlers;
     CCTime _time;  // time (in seconds) since the game started
 }
@@ -22,5 +22,6 @@
 + (GameScene *)scene;
 
 - (id)init;
+- (void)toggleCollisionRectangles:(id)sender;
 
 @end

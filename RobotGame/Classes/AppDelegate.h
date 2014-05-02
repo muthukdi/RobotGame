@@ -19,6 +19,7 @@
 - (BOOL)leftRightNotPressed;
 - (BOOL)jumpPressed;
 - (CCTime)getTimeElapsed;
+- (void)removeChild:(CCNode *)child cleanup:(BOOL)cleanup;
 
 @end
 

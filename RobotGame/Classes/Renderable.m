@@ -13,7 +13,7 @@
 @synthesize sprite = _sprite;
 @synthesize duration = _duration;
 
-- (id)initWithImageFile:(NSString *)imageFile duration:(float)duration numberOfCells:(int)numCells
+- (id)initWithImageFile:(NSString *)imageFile duration:(CCTime)duration numberOfCells:(int)numCells
 {
     self = [super init];
     if (!self) return(nil);

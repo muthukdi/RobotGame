@@ -27,8 +27,6 @@
     CCSprite *background = [CCSprite spriteWithImageNamed:@"Layer1.png"];
     background.position = ccp(self.contentSize.width/2, self.contentSize.height/2);
     [self addChild:background];
-    // Initialize the robot
-    _robot = [[Robot alloc] initWithPosition:ccp(self.contentSize.width/2, 128.0) view:self];
     // Initialize the crawlers with random configurations
     _crawlers = [NSMutableArray arrayWithCapacity:4];
     float randomX;
@@ -44,6 +42,8 @@
                                                      direction:randomDirection
                                                     speedScale:randomScale]];
     }
+    // Initialize the robot
+    _robot = [[Robot alloc] initWithPosition:ccp(self.contentSize.width/2, 128.0) view:self];
     // Create the left and right motion controls
     leftButton = [CCButton buttonWithTitle:@""
                                spriteFrame:[CCSpriteFrame frameWithImageNamed:@"leftarrow.png"]];
@@ -78,6 +78,12 @@
     jumpButton2.position = ccp(self.contentSize.width - jumpButton2.boundingBox.size.width/2,
                                self.contentSize.height - 3*jumpButton2.boundingBox.size.height/2);
     [self addChild:jumpButton2];
+    collisionButton = [CCButton buttonWithTitle:@""
+                                    spriteFrame:[CCSpriteFrame frameWithImageNamed:@"collision.png"]];
+    collisionButton.scale = 0.75f;
+    collisionButton.position =  ccp(self.contentSize.width/2, rightButton.position.y);
+    [collisionButton setTarget:self selector:@selector(toggleCollisionRectangles:)];
+    [self addChild:collisionButton];
     
 	return self;
 }
@@ -90,9 +96,44 @@
     [_robot update:dt];
     
     // Update the crawlers
+    NSMutableArray *deadCrawlers = [NSMutableArray arrayWithCapacity:_crawlers.count];
     for (Crawler *crawler in _crawlers)
     {
+        // Identify any crawlers that are already dead
+        if (crawler.state == CRAWLER_DEAD)
+        {
+            [deadCrawlers addObject:crawler];
+        }
+        // Check if the robot has stomped on this crawler
+        if (_robot.velocityY < 0.0f)
+        {
+            if (_robot.position.x + _robot.width/2 > crawler.position.x - 0.6*crawler.width/2 &&
+                _robot.position.x - _robot.width/2 < crawler.position.x + 0.6*crawler.width/2 &&
+                _robot.position.y - _robot.height/2 < crawler.position.y + crawler.height/2 &&
+                _robot.position.y + _robot.height/2 > crawler.position.y - crawler.height/2)
+            {
+                // Make sure that the crawler is not already dying or dead
+                if (crawler.state != CRAWLER_DYING && crawler.state != CRAWLER_DEAD)
+                {
+                    // Give the robot a little bounce
+                    [_robot bounce:600.0f];
+                    // Start this crawler's death animation
+                    crawler.state = CRAWLER_DYING;
+                }
+            }
+        }
         [crawler update:dt];
+    }
+    // Remove the dead crawlers
+    [_crawlers removeObjectsInArray:deadCrawlers];
+}
+
+- (void)toggleCollisionRectangles:(id)sender
+{
+    _robot.collider.visible = _robot.collider.visible ? NO : YES;
+    for (Crawler *crawler in _crawlers)
+    {
+        crawler.collider.visible = crawler.collider.visible ? NO : YES;
     }
 }
 

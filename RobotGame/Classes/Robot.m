@@ -13,6 +13,11 @@
 @synthesize renderable = _renderable;
 @synthesize state = _state;
 @synthesize direction = _direction;
+@synthesize velocityY = _velocityY;
+@synthesize position = _position;
+@synthesize width = _width;
+@synthesize height = _height;
+@synthesize collider = _collider;
 
 - (id)initWithPosition:(CGPoint)position view:(id)scene
 {
@@ -30,24 +35,35 @@
     _renderableJump = [[Renderable alloc] initWithImageFile:@"robot_jump.png"
                                                   duration:1.0f
                                              numberOfCells:8];
+    // Initialize collider
+    _collider = [CCSprite spriteWithTexture:[CCTexture textureWithFile:@"yellow.png"]
+                                       rect:CGRectMake(0.0f, 0.0f, 90.0f, 150.0f)];
+    _collider.opacity = 0.3f;
+    _collider.visible = NO;
+    [_view addChild:_collider];
+    // Add the sprites to the game scene
     [_view addChild:_renderableIdle.sprite];
     [_view addChild:_renderableJump.sprite];
     [_view addChild:_renderableRun.sprite];
     
     // Configure the initial state
     _state = ROBOT_IDLE;
-    _renderableIdle.sprite.position = position;
-    _renderableRun.sprite.visible = NO;
     _renderable = _renderableIdle;
-    _velocityY = 1200.0f;
     _width = _renderable.sprite.boundingBox.size.width;
+    _height = _renderable.sprite.boundingBox.size.height;
+    _position = position;
+    _renderableIdle.sprite.position = position;
+    _collider.position = ccp(position.x, position.y - 0.35*_collider.boundingBox.size.height);
+    _renderableRun.sprite.visible = NO;
+    _renderableJump.sprite.visible = NO;
+    _velocityY = 1200.0f;
     
     return self;
 }
 
 - (void)setRenderable:(Renderable *)renderable
 {
-    // Update the new renderable's sprite position
+    // Update the new renderable's sprite
     renderable.sprite.position = _renderable.sprite.position;
     // Make sure that only the new renderable's sprite is visible
     _renderable.sprite.visible = NO;
@@ -97,6 +113,39 @@
     _renderableJump.sprite.flipX = direction;
 }
 
+- (void)setPosition:(CGPoint)position
+{
+    _position = position;
+    _renderable.sprite.position = position;
+    _collider.position = ccp(position.x, position.y - 0.35*_collider.boundingBox.size.height);
+}
+
+
+// Return the position of the collider (for external use only)
+- (CGPoint)position
+{
+    return _collider.position;
+}
+
+// Return the width of the collider (for external use only)
+- (CGFloat)width
+{
+    return _collider.boundingBox.size.width;
+}
+
+// Return the height of the collider (for external use only)
+- (CGFloat)height
+{
+    return _collider.boundingBox.size.height;
+}
+
+- (void)bounce:(float)velocity
+{
+    _velocityY = velocity;
+    self.state = ROBOT_JUMP;
+    [[OALSimpleAudio sharedInstance] playEffect:@"stomp_sound.wav"];
+}
+
 - (void)update:(CCTime)dt
 {
     float runningSpeed = 500;
@@ -132,8 +181,6 @@
         }
         case ROBOT_RUN:
         {
-            CGFloat x = _renderable.sprite.position.x;
-            CGFloat y = _renderable.sprite.position.y;
             if ([_view leftRightNotPressed])
             {
                 self.state = ROBOT_IDLE;
@@ -156,38 +203,31 @@
             if ([_view leftPressed])
             {
                 self.direction = YES;
-                _renderable.sprite.position = ccp(x - (dt * runningSpeed), y);
-                x = _renderable.sprite.position.x;
+                self.position = ccp(_position.x - (dt * runningSpeed), _position.y);
             }
             if ([_view rightPressed])
             {
                 self.direction = NO;
-                _renderable.sprite.position = ccp(x + (dt * runningSpeed), y);
-                x = _renderable.sprite.position.x;
+                self.position = ccp(_position.x + (dt * runningSpeed), _position.y);
             }
             // Collisions with the edge of the screen
-            if (x < _width/2)
+            if (_position.x < _width/2)
             {
-                _renderable.sprite.position =  ccp(_width/2, y);
-                x = _renderable.sprite.position.x;
+                self.position =  ccp(_width/2, _position.y);
             }
-            if (x > [_view getScreenWidth] - _width/2)
+            if (_position.x > [_view getScreenWidth] - _width/2)
             {
-                _renderable.sprite.position =  ccp([_view getScreenWidth] - _width/2, y);
-                x = _renderable.sprite.position.x;
+                self.position =  ccp([_view getScreenWidth] - _width/2, _position.y);
             }
             break;
         }
         case ROBOT_JUMP:
         {
-            CGFloat x = _renderable.sprite.position.x;
-            CGFloat y = _renderable.sprite.position.y;
             _velocityY -= GRAVITY * dt;
-            _renderable.sprite.position = ccp(x, y + (dt * _velocityY));
-            y = _renderable.sprite.position.y;
-            if (y < 128.0f)
+            self.position = ccp(_position.x, _position.y + (dt * _velocityY));
+            if (_position.y < 128.0f)
             {
-                _renderable.sprite.position = ccp(x, 128.0f);
+                self.position = ccp(_position.x, 128.0f);
                 self.state = ROBOT_IDLE;
                 _velocityY = 1200.0f;
                 break;
@@ -196,25 +236,21 @@
             if ([_view leftPressed])
             {
                 self.direction = YES;
-                _renderable.sprite.position = ccp(x - (dt * runningSpeed), y);
-                x = _renderable.sprite.position.x;
+                self.position = ccp(_position.x - (dt * runningSpeed), _position.y);
             }
             if ([_view rightPressed])
             {
                 self.direction = NO;
-                _renderable.sprite.position = ccp(x + (dt * runningSpeed), y);
-                x = _renderable.sprite.position.x;
+                self.position = ccp(_position.x + (dt * runningSpeed), _position.y);
             }
             // Collisions with the edge of the screen
-            if (x < _width/2)
+            if (_position.x < _width/2)
             {
-                _renderable.sprite.position =  ccp(_width/2, y);
-                x = _renderable.sprite.position.x;
+                self.position =  ccp(_width/2, _position.y);
             }
-            if (x > [_view getScreenWidth] - _width/2)
+            if (_position.x > [_view getScreenWidth] - _width/2)
             {
-                _renderable.sprite.position =  ccp([_view getScreenWidth] - _width/2, y);
-                x = _renderable.sprite.position.x;
+                self.position =  ccp([_view getScreenWidth] - _width/2, _position.y);
             }
             break;
         }
@@ -223,6 +259,16 @@
             break;
     }
     [_renderable animate:dt];
+}
+
+- (void)dealloc
+{
+    // Need to remove these explicitly since the scene still
+    // has a reference to them
+    [_view removeChild:_renderableIdle.sprite cleanup:YES];
+    [_view removeChild:_renderableRun.sprite cleanup:YES];
+    [_view removeChild:_renderableJump.sprite cleanup:YES];
+    [_view removeChild:_collider cleanup:YES];
 }
 
 @end
