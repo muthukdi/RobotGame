@@ -95,7 +95,7 @@
     {
         case CRAWLER_IDLE:
         {
-            [_renderableIdle rewind];
+            [_renderableIdle rewind:0.0f];
             self.renderable = _renderableIdle;
             int numCycles = arc4random() % 4 + 2;
             _nextThinkTime = [_view getTimeElapsed] + numCycles * _renderableIdle.duration;
@@ -103,7 +103,7 @@
         }
         case CRAWLER_WALK:
         {
-            [_renderableWalk rewind];
+            [_renderableWalk rewind:0.0f];
             self.renderable = _renderableWalk;
             _walkingSpeedScale = (float)(arc4random() % 16 + 5)/10.0f;
             int numCycles = arc4random() % 6 + 5;
@@ -112,7 +112,7 @@
         }
         case CRAWLER_DYING:
         {
-            [_renderableDie rewind];
+            [_renderableDie rewind:0.0f];
             self.renderable = _renderableDie;
             break;
         }

@@ -14,7 +14,7 @@
 
 typedef enum RobotStateTypes
 {
-    ROBOT_IDLE, ROBOT_RUN, ROBOT_JUMP
+    ROBOT_IDLE, ROBOT_RUN, ROBOT_JUMP, ROBOT_FALL
     
 } RobotState;
 

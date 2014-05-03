@@ -30,9 +30,10 @@
 	return self;
 }
 
-- (void)rewind
+- (void)rewind:(float)progress
 {
-    _time = 0.0f;
+    NSAssert((progress >= 0.0f) && (progress <= 1.0f), @"Invalid rewind parameter!");
+    _time = progress * _duration;
 }
 
 - (void)animate:(CCTime)dt

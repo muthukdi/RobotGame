@@ -22,7 +22,7 @@
 @property (nonatomic, readonly) CCTime duration;
 
 - (id)initWithImageFile:(NSString *)imageFile duration:(CCTime)duration numberOfCells:(int)numCells;
-- (void)rewind;
+- (void)rewind:(float)progress;  // Between 0.0 and 1.0 (0.0 = begin and 1.0 = end)
 - (void)animate:(CCTime)dt;
 
 

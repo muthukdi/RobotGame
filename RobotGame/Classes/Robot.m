@@ -47,15 +47,24 @@
     [_view addChild:_renderableRun.sprite];
     
     // Configure the initial state
-    _state = ROBOT_IDLE;
+    if (position.y > 128.0f)
+    {
+        _state = ROBOT_FALL;
+        _renderableRun.sprite.visible = NO;
+        _renderableIdle.sprite.visible = NO;
+    }
+    else
+    {
+        _state = ROBOT_IDLE;
+        _renderableRun.sprite.visible = NO;
+        _renderableJump.sprite.visible = NO;
+    }
     _renderable = _renderableIdle;
     _width = _renderable.sprite.boundingBox.size.width;
     _height = _renderable.sprite.boundingBox.size.height;
     _position = position;
     _renderableIdle.sprite.position = position;
     _collider.position = ccp(position.x, position.y - 0.35*_collider.boundingBox.size.height);
-    _renderableRun.sprite.visible = NO;
-    _renderableJump.sprite.visible = NO;
     _velocityY = 1200.0f;
     
     return self;
@@ -82,19 +91,25 @@
     {
         case ROBOT_IDLE:
         {
-            [_renderableIdle rewind];
+            [_renderableIdle rewind:0.0f];
             self.renderable = _renderableIdle;
             break;
         }
         case ROBOT_RUN:
         {
-            [_renderableRun rewind];
+            [_renderableRun rewind:0.0f];
             self.renderable = _renderableRun;
             break;
         }
         case ROBOT_JUMP:
         {
-            [_renderableJump rewind];
+            [_renderableJump rewind:0.0f];
+            self.renderable = _renderableJump;
+            break;
+        }
+        case ROBOT_FALL:
+        {
+            [_renderableJump rewind:0.5f];
             self.renderable = _renderableJump;
             break;
         }
@@ -253,6 +268,11 @@
                 self.position =  ccp([_view getScreenWidth] - _width/2, _position.y);
             }
             break;
+        }
+        case ROBOT_FALL:
+        {
+            _velocityY = 0.0f;
+            self.state = ROBOT_JUMP;
         }
         default:
             // Shouldn't happen
