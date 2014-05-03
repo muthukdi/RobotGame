@@ -31,11 +31,11 @@
                                                   duration:0.5f
                                              numberOfCells:8];
     _renderableDie = [[Renderable alloc] initWithImageFile:@"crawler_die.png"
-                                                   duration:1.0f
+                                                   duration:0.7f
                                               numberOfCells:8];
     // Initialize collider
     _collider = [CCSprite spriteWithTexture:[CCTexture textureWithFile:@"yellow.png"]
-                                       rect:CGRectMake(0.0f, 0.0f, 100.0f, 70.0f)];
+                                       rect:CGRectMake(0.0f, 0.0f, 70.0f, 70.0f)];
     _collider.opacity = 0.3f;
     _collider.visible = NO;
     [_view addChild:_collider];

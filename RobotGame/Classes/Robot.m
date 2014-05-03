@@ -37,7 +37,7 @@
                                              numberOfCells:8];
     // Initialize collider
     _collider = [CCSprite spriteWithTexture:[CCTexture textureWithFile:@"yellow.png"]
-                                       rect:CGRectMake(0.0f, 0.0f, 90.0f, 150.0f)];
+                                       rect:CGRectMake(0.0f, 0.0f, 70.0f, 150.0f)];
     _collider.opacity = 0.3f;
     _collider.visible = NO;
     [_view addChild:_collider];

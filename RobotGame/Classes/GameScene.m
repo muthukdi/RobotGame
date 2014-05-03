@@ -85,6 +85,13 @@
     [collisionButton setTarget:self selector:@selector(toggleCollisionRectangles:)];
     [self addChild:collisionButton];
     
+    crawlerButton = [CCButton buttonWithTitle:@""
+                                    spriteFrame:[CCSpriteFrame frameWithImageNamed:@"crawler.png"]];
+    crawlerButton.scale = 0.75f;
+    crawlerButton.position =  ccp(self.contentSize.width/4, rightButton.position.y);
+    [crawlerButton setTarget:self selector:@selector(createCrawler:)];
+    [self addChild:crawlerButton];
+    
 	return self;
 }
 
@@ -107,8 +114,8 @@
         // Check if the robot has stomped on this crawler
         if (_robot.velocityY < 0.0f)
         {
-            if (_robot.position.x + _robot.width/2 > crawler.position.x - 0.6*crawler.width/2 &&
-                _robot.position.x - _robot.width/2 < crawler.position.x + 0.6*crawler.width/2 &&
+            if (_robot.position.x + _robot.width/2 > crawler.position.x - crawler.width/2 &&
+                _robot.position.x - _robot.width/2 < crawler.position.x + crawler.width/2 &&
                 _robot.position.y - _robot.height/2 < crawler.position.y + crawler.height/2 &&
                 _robot.position.y + _robot.height/2 > crawler.position.y - crawler.height/2)
             {
@@ -135,6 +142,19 @@
     {
         crawler.collider.visible = crawler.collider.visible ? NO : YES;
     }
+}
+
+- (void)createCrawler:(id)sender
+{
+    float randomX = (float)(arc4random() % ((int)(self.contentSize.width) - 128) + 64);
+    bool randomDirection = (BOOL)(arc4random() % 2);
+    float randomScale = (float)(arc4random() % 16 + 5)/10.0f;
+    Crawler *crawler = [[Crawler alloc] initWithPosition:ccp(randomX, 128.0)
+                                                    view:self
+                                               direction:randomDirection
+                                              speedScale:randomScale];
+    crawler.collider.visible = _robot.collider.visible;
+    [_crawlers addObject:crawler];
 }
 
 
