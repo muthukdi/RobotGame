@@ -43,7 +43,7 @@
                                                     speedScale:randomScale]];
     }
     // Initialize the robot
-    _robot = [[Robot alloc] initWithPosition:ccp(self.contentSize.width/8, 500.0) view:self];
+    _robot = [[Robot alloc] initWithPosition:ccp(self.contentSize.width/8, 600.0f) view:self];
     // Create the left and right motion controls
     leftButton = [CCButton buttonWithTitle:@""
                                spriteFrame:[CCSpriteFrame frameWithImageNamed:@"leftarrow.png"]];
