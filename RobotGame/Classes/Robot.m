@@ -29,6 +29,8 @@
     _view = scene;
     _jumpEnabled = YES;
     _scale = 1.0f;
+    _gravity = [_view screenWidth] < 600.0f ? 1500.0f : 3000.0f;
+    _runningSpeed = [_view screenWidth] < 600.0f ? 250.0f : 500.0f;
     _renderableIdle = [[Renderable alloc] initWithImageFile:@"robot_idle.png"
                                                    duration:1.0f
                                               numberOfCells:8];
@@ -65,7 +67,7 @@
         _renderable = _renderableIdle;
         _renderableRun.sprite.visible = NO;
         _renderableJump.sprite.visible = NO;
-        _velocityY = 1200.0f;
+        _velocityY = [_view screenWidth] < 600.0f ? 600.0f : 1200.0f;
     }
     _width = _renderableIdle.sprite.boundingBox.size.width;
     _height = _renderableIdle.sprite.boundingBox.size.height;
@@ -99,20 +101,20 @@
         {
             [_renderableIdle rewind:0.0f];
             self.renderable = _renderableIdle;
-            _velocityY = 1200.0f;
+            _velocityY = [_view screenWidth] < 600.0f ? 600.0f : 1200.0f;
             break;
         }
         case ROBOT_RUN:
         {
             [_renderableRun rewind:0.0f];
-            _velocityY = 1200.0f;
+            _velocityY = [_view screenWidth] < 600.0f ? 600.0f : 1200.0f;
             self.renderable = _renderableRun;
             break;
         }
         case ROBOT_JUMP:
         {
             [_renderableJump rewind:0.0f];
-            _velocityY = 1200.0f;
+            _velocityY = [_view screenWidth] < 600.0f ? 600.0f : 1200.0f;
             self.renderable = _renderableJump;
             break;
         }
@@ -183,7 +185,6 @@
 
 - (void)update:(CCTime)dt
 {
-    float runningSpeed = 500;
     switch (_state)
     {
         case ROBOT_IDLE:
@@ -238,12 +239,12 @@
             if ([_view leftPressed])
             {
                 self.direction = YES;
-                self.position = ccp(_position.x - (dt * runningSpeed), _position.y);
+                self.position = ccp(_position.x - (dt * _runningSpeed), _position.y);
             }
             if ([_view rightPressed])
             {
                 self.direction = NO;
-                self.position = ccp(_position.x + (dt * runningSpeed), _position.y);
+                self.position = ccp(_position.x + (dt * _runningSpeed), _position.y);
             }
             // Collisions with the edge of the screen
             if (_position.x < _width/2)
@@ -258,7 +259,7 @@
         }
         case ROBOT_JUMP:
         {
-            _velocityY -= GRAVITY * dt;
+            _velocityY -= _gravity * dt;
             self.position = ccp(_position.x, _position.y + (dt * _velocityY));
             if (_position.y < ([_view screenWidth] < 600.0f ? 64.0f : 128.0f))
             {
@@ -270,12 +271,12 @@
             if ([_view leftPressed])
             {
                 self.direction = YES;
-                self.position = ccp(_position.x - (dt * runningSpeed), _position.y);
+                self.position = ccp(_position.x - (dt * _runningSpeed), _position.y);
             }
             if ([_view rightPressed])
             {
                 self.direction = NO;
-                self.position = ccp(_position.x + (dt * runningSpeed), _position.y);
+                self.position = ccp(_position.x + (dt * _runningSpeed), _position.y);
             }
             // Collisions with the edge of the screen
             if (_position.x < _width/2)

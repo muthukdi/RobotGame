@@ -133,7 +133,7 @@
                 if (crawler.state != CRAWLER_DYING && crawler.state != CRAWLER_DEAD)
                 {
                     // Give the robot a little bounce
-                    [_robot bounce:600.0f];
+                    [_robot bounce:iPhone ? 300.0f : 600.0f];
                     // Start this crawler's death animation
                     crawler.state = CRAWLER_DYING;
                 }

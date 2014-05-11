@@ -10,8 +10,6 @@
 #import "Renderable.h"
 #import "AppDelegate.h"
 
-#define GRAVITY 3000.0f
-
 typedef enum RobotStateTypes
 {
     ROBOT_IDLE, ROBOT_RUN, ROBOT_JUMP, ROBOT_FALL
@@ -25,6 +23,8 @@ typedef enum RobotStateTypes
     Renderable *_renderableRun;
     Renderable *_renderableJump;
     BOOL _jumpEnabled;              // a flag to prevent repeated jumps
+    float _gravity;
+    float _runningSpeed;
 }
 
 @property (nonatomic, strong) Renderable *renderable;

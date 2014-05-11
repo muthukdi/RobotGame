@@ -10,8 +10,6 @@
 #import "Renderable.h"
 #import "AppDelegate.h"
 
-#define WALKING_SPEED 60.0f
-
 typedef enum CrawlerStateTypes
 {
     CRAWLER_IDLE, CRAWLER_WALK, CRAWLER_DYING, CRAWLER_DEAD

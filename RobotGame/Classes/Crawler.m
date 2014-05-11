@@ -174,6 +174,7 @@
 
 - (void)update:(CCTime)dt
 {
+    float walkingSpeed = [_view screenWidth] < 600.0f ? 30.0f : 60.0f;
     switch (_state)
     {
         case CRAWLER_IDLE:
@@ -199,11 +200,11 @@
                 // Move in the current direction
                 if (self.direction)
                 {
-                    self.position = ccp(_position.x - (dt * _walkingSpeedScale * WALKING_SPEED), _position.y);
+                    self.position = ccp(_position.x - (dt * _walkingSpeedScale * walkingSpeed), _position.y);
                 }
                 else
                 {
-                    self.position = ccp(_position.x + (dt * _walkingSpeedScale * WALKING_SPEED), _position.y);
+                    self.position = ccp(_position.x + (dt * _walkingSpeedScale * walkingSpeed), _position.y);
                 }
                 // Collisions with the edge of the screen
                 if (_position.x < _width/2)
