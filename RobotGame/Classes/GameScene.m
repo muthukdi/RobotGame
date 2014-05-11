@@ -10,6 +10,9 @@
 
 @implementation GameScene
 
+@synthesize screenWidth = _screenWidth;
+@synthesize screenHeight = _screenHeight;
+
 + (GameScene *)scene
 {
 	return [[self alloc] init];
@@ -20,75 +23,82 @@
     self = [super init];
     if (!self) return(nil);
     
+    _screenWidth = self.contentSize.width;
+    _screenHeight = self.contentSize.height;
     // Initialize the time
     _time = 0.0;
     // Play the background music
-    //[[OALSimpleAudio sharedInstance] playBg:@"music.mp3" volume:0.3f pan:0.0f loop:YES];
+    [[OALSimpleAudio sharedInstance] playBg:@"music.mp3" volume:0.3f pan:0.0f loop:YES];
     CCSprite *background = [CCSprite spriteWithImageNamed:@"Layer1.png"];
-    background.position = ccp(self.contentSize.width/2, self.contentSize.height/2);
+    background.position = ccp(_screenWidth/2, _screenHeight/2);
+    background.scale = iPhone ? 0.56f : 1.0f;
     [self addChild:background];
     // Initialize the crawlers with random configurations
     _crawlers = [NSMutableArray arrayWithCapacity:4];
-    float randomX;
+    float randomX, y;
     BOOL randomDirection;
     float randomScale;
     for (int i = 0; i < 4; i++)
     {
-        randomX = (float)(arc4random() % ((int)(self.contentSize.width) - 128) + 64);
+        randomX = (float)(arc4random() % ((int)_screenWidth - 128) + 64);
+        y = iPhone ? 64.0f : 128.0f;
         randomDirection = (BOOL)(arc4random() % 2);
         randomScale = (float)(arc4random() % 16 + 5)/10.0f;
-        [_crawlers addObject:[[Crawler alloc] initWithPosition:ccp(randomX, 128.0)
-                                                          view:self
-                                                     direction:randomDirection
-                                                    speedScale:randomScale]];
+        Crawler *crawler = [[Crawler alloc] initWithPosition:ccp(randomX, y)
+                                                        view:self
+                                                   direction:randomDirection
+                                                  speedScale:randomScale];
+        crawler.scale = iPhone ? 1.0f : 2.0f;
+        [_crawlers addObject:crawler];
     }
     // Initialize the robot
-    _robot = [[Robot alloc] initWithPosition:ccp(self.contentSize.width/8, 600.0f) view:self];
+    _robot = [[Robot alloc] initWithPosition:ccp(_screenWidth/8, y) view:self];
+    _robot.scale = iPhone ? 1.0f : 2.0f;
     // Create the left and right motion controls
     leftButton = [CCButton buttonWithTitle:@""
                                spriteFrame:[CCSpriteFrame frameWithImageNamed:@"leftarrow.png"]];
-    leftButton.scale = 0.5f;
+    leftButton.scale = iPhone ? 1.0f : 2.0f;
     leftButton.exclusiveTouch = NO;
     leftButton.claimsUserInteraction = NO;
     leftButton.position = ccp(leftButton.boundingBox.size.width/2,
-                              self.contentSize.height - leftButton.boundingBox.size.height/2);
+                              _screenHeight - leftButton.boundingBox.size.height/2);
     [self addChild:leftButton];
     rightButton = [CCButton buttonWithTitle:@""
                                 spriteFrame:[CCSpriteFrame frameWithImageNamed:@"rightarrow.png"]];
-    rightButton.scale = 0.5f;
+    rightButton.scale = iPhone ? 1.0f : 2.0f;
     rightButton.exclusiveTouch = NO;
     rightButton.claimsUserInteraction = NO;
-    rightButton.position = ccp(self.contentSize.width - rightButton.boundingBox.size.width/2,
-                               self.contentSize.height - rightButton.boundingBox.size.height/2);
+    rightButton.position = ccp(_screenWidth - rightButton.boundingBox.size.width/2,
+                               _screenHeight - rightButton.boundingBox.size.height/2);
     [self addChild:rightButton];
     // Create the jump buttons
     jumpButton1 = [CCButton buttonWithTitle:@""
                                spriteFrame:[CCSpriteFrame frameWithImageNamed:@"jump.png"]];
-    jumpButton1.scale = 0.5f;
+    jumpButton1.scale = iPhone ? 1.0f : 2.0f;
     jumpButton1.exclusiveTouch = NO;
     jumpButton1.claimsUserInteraction = NO;
     jumpButton1.position = ccp(jumpButton1.boundingBox.size.width/2,
-                              self.contentSize.height - 3*jumpButton1.boundingBox.size.height/2);
+                              _screenHeight - 3*jumpButton1.boundingBox.size.height/2);
     [self addChild:jumpButton1];
     jumpButton2 = [CCButton buttonWithTitle:@""
                                 spriteFrame:[CCSpriteFrame frameWithImageNamed:@"jump.png"]];
-    jumpButton2.scale = 0.5f;
+    jumpButton2.scale = iPhone ? 1.0f : 2.0f;
     jumpButton2.exclusiveTouch = NO;
     jumpButton2.claimsUserInteraction = NO;
-    jumpButton2.position = ccp(self.contentSize.width - jumpButton2.boundingBox.size.width/2,
-                               self.contentSize.height - 3*jumpButton2.boundingBox.size.height/2);
+    jumpButton2.position = ccp(_screenWidth - jumpButton2.boundingBox.size.width/2,
+                               _screenHeight - 3*jumpButton2.boundingBox.size.height/2);
     [self addChild:jumpButton2];
     collisionButton = [CCButton buttonWithTitle:@""
                                     spriteFrame:[CCSpriteFrame frameWithImageNamed:@"collision.png"]];
-    collisionButton.scale = 0.75f;
-    collisionButton.position =  ccp(self.contentSize.width/2, rightButton.position.y);
+    collisionButton.scale = iPhone ? 1.0f : 2.0f;
+    collisionButton.position =  ccp(_screenWidth/2, rightButton.position.y);
     [collisionButton setTarget:self selector:@selector(toggleCollisionRectangles:)];
     [self addChild:collisionButton];
     
     crawlerButton = [CCButton buttonWithTitle:@""
                                     spriteFrame:[CCSpriteFrame frameWithImageNamed:@"crawler.png"]];
-    crawlerButton.scale = 0.75f;
-    crawlerButton.position =  ccp(self.contentSize.width/4, rightButton.position.y);
+    crawlerButton.scale = iPhone ? 1.0f : 2.0f;
+    crawlerButton.position =  ccp(_screenWidth/4, rightButton.position.y);
     [crawlerButton setTarget:self selector:@selector(createCrawler:)];
     [self addChild:crawlerButton];
     
@@ -146,29 +156,21 @@
 
 - (void)createCrawler:(id)sender
 {
-    float randomX = (float)(arc4random() % ((int)(self.contentSize.width) - 128) + 64);
+    float randomX = (float)(arc4random() % ((int)_screenWidth - 128) + 64);
+    float y = iPhone ? 64.0f : 128.0f;
     bool randomDirection = (BOOL)(arc4random() % 2);
     float randomScale = (float)(arc4random() % 16 + 5)/10.0f;
-    Crawler *crawler = [[Crawler alloc] initWithPosition:ccp(randomX, 128.0)
+    Crawler *crawler = [[Crawler alloc] initWithPosition:ccp(randomX, y)
                                                     view:self
                                                direction:randomDirection
                                               speedScale:randomScale];
+    crawler.scale = iPhone ? 1.0f : 2.0f;
     crawler.collider.visible = _robot.collider.visible;
     [_crawlers addObject:crawler];
 }
 
 
 #pragma mark - GameDelegate protocol methods
-
-- (CGFloat)getScreenWidth
-{
-    return self.contentSize.width;
-}
-
-- (CGFloat)getScreenHeight
-{
-    return self.contentSize.height;
-}
 
 - (BOOL)leftPressed
 {

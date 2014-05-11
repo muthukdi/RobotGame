@@ -13,7 +13,9 @@
 @synthesize sprite = _sprite;
 @synthesize duration = _duration;
 
-- (id)initWithImageFile:(NSString *)imageFile duration:(CCTime)duration numberOfCells:(int)numCells
+- (id)initWithImageFile:(NSString *)imageFile
+               duration:(CCTime)duration
+          numberOfCells:(int)numCells
 {
     self = [super init];
     if (!self) return(nil);
@@ -25,7 +27,7 @@
     _cellWidth = _tex.contentSize.width/_numCells;
     _cellHeight = _tex.contentSize.height;
     _sprite = [CCSprite spriteWithTexture:_tex rect:CGRectMake(0, 0, _cellWidth, _cellHeight)];
-    _sprite.scale = 2.0f;
+    _sprite.scale = 1.0f;
     
 	return self;
 }

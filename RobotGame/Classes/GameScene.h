@@ -11,6 +11,9 @@
 #import "Robot.h"
 #import "Crawler.h"
 
+// Easy trick to distinguish between iPhones and iPads
+#define iPhone _screenWidth < 600.0f
+
 @interface GameScene : CCScene <GameDelegate>
 {
     Robot *_robot;
@@ -18,6 +21,9 @@
     NSMutableArray *_crawlers;
     CCTime _time;  // time (in seconds) since the game started
 }
+
+@property (nonatomic, assign) CGFloat screenWidth;
+@property (nonatomic, assign) CGFloat screenHeight;
 
 + (GameScene *)scene;
 

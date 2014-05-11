@@ -12,8 +12,8 @@
 @protocol GameDelegate
 
 - (void)addChild:(CCNode*)child;
-- (CGFloat)getScreenWidth;
-- (CGFloat)getScreenHeight;
+- (CGFloat)screenWidth;
+- (CGFloat)screenHeight;
 - (BOOL)leftPressed;
 - (BOOL)rightPressed;
 - (BOOL)leftRightNotPressed;

@@ -17,6 +17,7 @@
 @synthesize width = _width;
 @synthesize height = _height;
 @synthesize collider = _collider;
+@synthesize scale = _scale;
 
 - (id)initWithPosition:(CGPoint)position view:(id)scene direction:(BOOL)direction speedScale:(float)speedScale
 {
@@ -24,6 +25,7 @@
     if (!self) return(nil);
     
     _view = scene;
+    _scale = 1.0f;
     _renderableIdle = [[Renderable alloc] initWithImageFile:@"crawler_idle.png"
                                                    duration:0.5f
                                               numberOfCells:8];
@@ -35,7 +37,7 @@
                                               numberOfCells:8];
     // Initialize collider
     _collider = [CCSprite spriteWithTexture:[CCTexture textureWithFile:@"yellow.png"]
-                                       rect:CGRectMake(0.0f, 0.0f, 70.0f, 70.0f)];
+                                       rect:CGRectMake(0.0f, 0.0f, 35.0f, 35.0f)];
     _collider.opacity = 0.3f;
     _collider.visible = NO;
     [_view addChild:_collider];
@@ -160,6 +162,16 @@
     return _collider.boundingBox.size.height;
 }
 
+// Set scale of visual
+- (void)setScale:(CGFloat)scale
+{
+    _scale = scale;
+    _renderableDie.sprite.scale = scale;
+    _renderableWalk.sprite.scale = scale;
+    _renderableIdle.sprite.scale = scale;
+    _collider.scale = scale;
+}
+
 - (void)update:(CCTime)dt
 {
     switch (_state)
@@ -199,10 +211,10 @@
                     self.direction = NO;
                     self.position =  ccp(_width/2, _position.y);
                 }
-                if (_position.x > [_view getScreenWidth] - _width/2)
+                if (_position.x > [_view screenWidth] - _width/2)
                 {
                     self.direction = YES;
-                    self.position =  ccp([_view getScreenWidth] - _width/2, _position.y);
+                    self.position =  ccp([_view screenWidth] - _width/2, _position.y);
                 }
                 [_renderable animate:dt * _walkingSpeedScale];
             }

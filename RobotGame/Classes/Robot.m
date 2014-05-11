@@ -18,14 +18,17 @@
 @synthesize width = _width;
 @synthesize height = _height;
 @synthesize collider = _collider;
+@synthesize scale = _scale;
 
-- (id)initWithPosition:(CGPoint)position view:(id)scene
+- (id)initWithPosition:(CGPoint)position
+                  view:(id)scene;
 {
     self = [super init];
     if (!self) return(nil);
     
     _view = scene;
     _jumpEnabled = YES;
+    _scale = 1.0f;
     _renderableIdle = [[Renderable alloc] initWithImageFile:@"robot_idle.png"
                                                    duration:1.0f
                                               numberOfCells:8];
@@ -37,7 +40,7 @@
                                              numberOfCells:8];
     // Initialize collider
     _collider = [CCSprite spriteWithTexture:[CCTexture textureWithFile:@"yellow.png"]
-                                       rect:CGRectMake(0.0f, 0.0f, 70.0f, 150.0f)];
+                                       rect:CGRectMake(0.0f, 0.0f, 35.0f, 75.0f)];
     _collider.opacity = 0.3f;
     _collider.visible = NO;
     [_view addChild:_collider];
@@ -47,7 +50,7 @@
     [_view addChild:_renderableRun.sprite];
     
     // Configure the initial state
-    if (position.y > 128.0f)
+    if (position.y > ([_view screenWidth] < 600.0f ? 64.0f : 128.0f))
     {
         _state = ROBOT_FALL;
         _renderable = _renderableJump;
@@ -161,6 +164,16 @@
     return _collider.boundingBox.size.height;
 }
 
+// Set scale of visual
+- (void)setScale:(CGFloat)scale
+{
+    _scale = scale;
+    _renderableJump.sprite.scale = scale;
+    _renderableRun.sprite.scale = scale;
+    _renderableIdle.sprite.scale = scale;
+    _collider.scale = scale;
+}
+
 - (void)bounce:(float)velocity
 {
     _velocityY = velocity;
@@ -237,9 +250,9 @@
             {
                 self.position =  ccp(_width/2, _position.y);
             }
-            if (_position.x > [_view getScreenWidth] - _width/2)
+            if (_position.x > [_view screenWidth] - _width/2)
             {
-                self.position =  ccp([_view getScreenWidth] - _width/2, _position.y);
+                self.position =  ccp([_view screenWidth] - _width/2, _position.y);
             }
             break;
         }
@@ -247,9 +260,9 @@
         {
             _velocityY -= GRAVITY * dt;
             self.position = ccp(_position.x, _position.y + (dt * _velocityY));
-            if (_position.y < 128.0f)
+            if (_position.y < ([_view screenWidth] < 600.0f ? 64.0f : 128.0f))
             {
-                self.position = ccp(_position.x, 128.0f);
+                self.position = ccp(_position.x, ([_view screenWidth] < 600.0f ? 64.0f : 128.0f));
                 self.state = ROBOT_IDLE;
                 break;
             }
@@ -269,9 +282,9 @@
             {
                 self.position =  ccp(_width/2, _position.y);
             }
-            if (_position.x > [_view getScreenWidth] - _width/2)
+            if (_position.x > [_view screenWidth] - _width/2)
             {
-                self.position =  ccp([_view getScreenWidth] - _width/2, _position.y);
+                self.position =  ccp([_view screenWidth] - _width/2, _position.y);
             }
             break;
         }

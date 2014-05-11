@@ -35,6 +35,7 @@ typedef enum RobotStateTypes
 @property (nonatomic, assign) CGFloat width;
 @property (nonatomic, assign) CGFloat height;
 @property (nonatomic, strong) CCSprite *collider;
+@property (nonatomic, assign) CGFloat scale;
 
 - (id)initWithPosition:(CGPoint)position view:(id)scene;
 - (void)bounce:(float)velocity;
