@@ -13,8 +13,8 @@
 {
     CCTexture *_tex;
     int _numCells;
-    int _cellWidth;
-    int _cellHeight;
+    CGFloat _cellWidth;
+    CGFloat _cellHeight;
     float _time;
 }
 

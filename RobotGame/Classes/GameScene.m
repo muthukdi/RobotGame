@@ -33,15 +33,16 @@
     background.position = ccp(_screenWidth/2, _screenHeight/2);
     background.scale = iPhone ? 0.56f : 1.0f;
     [self addChild:background];
+    [self addTiles];
     // Initialize the crawlers with random configurations
     _crawlers = [NSMutableArray arrayWithCapacity:4];
-    float randomX, y;
+    float randomX;
     BOOL randomDirection;
     float randomScale;
+    float y = iPhone ? 96.0f : 192.0f;
     for (int i = 0; i < 4; i++)
     {
         randomX = (float)(arc4random() % ((int)_screenWidth - 128) + 64);
-        y = iPhone ? 64.0f : 128.0f;
         randomDirection = (BOOL)(arc4random() % 2);
         randomScale = (float)(arc4random() % 16 + 5)/10.0f;
         Crawler *crawler = [[Crawler alloc] initWithPosition:ccp(randomX, y)
@@ -54,6 +55,14 @@
     // Initialize the robot
     _robot = [[Robot alloc] initWithPosition:ccp(_screenWidth/8, y) view:self];
     _robot.scale = iPhone ? 1.0f : 2.0f;
+    // Add all the buttons
+    [self addButtons];
+    
+	return self;
+}
+
+- (void)addButtons
+{
     // Create the left and right motion controls
     leftButton = [CCButton buttonWithTitle:@""
                                spriteFrame:[CCSpriteFrame frameWithImageNamed:@"leftarrow.png"]];
@@ -73,12 +82,12 @@
     [self addChild:rightButton];
     // Create the jump buttons
     jumpButton1 = [CCButton buttonWithTitle:@""
-                               spriteFrame:[CCSpriteFrame frameWithImageNamed:@"jump.png"]];
+                                spriteFrame:[CCSpriteFrame frameWithImageNamed:@"jump.png"]];
     jumpButton1.scale = iPhone ? 1.0f : 2.0f;
     jumpButton1.exclusiveTouch = NO;
     jumpButton1.claimsUserInteraction = NO;
     jumpButton1.position = ccp(jumpButton1.boundingBox.size.width/2,
-                              _screenHeight - 3*jumpButton1.boundingBox.size.height/2);
+                               _screenHeight - 3*jumpButton1.boundingBox.size.height/2);
     [self addChild:jumpButton1];
     jumpButton2 = [CCButton buttonWithTitle:@""
                                 spriteFrame:[CCSpriteFrame frameWithImageNamed:@"jump.png"]];
@@ -96,13 +105,27 @@
     [self addChild:collisionButton];
     
     crawlerButton = [CCButton buttonWithTitle:@""
-                                    spriteFrame:[CCSpriteFrame frameWithImageNamed:@"crawler.png"]];
+                                  spriteFrame:[CCSpriteFrame frameWithImageNamed:@"crawler.png"]];
     crawlerButton.scale = iPhone ? 1.0f : 2.0f;
     crawlerButton.position =  ccp(_screenWidth/4, rightButton.position.y);
     [crawlerButton setTarget:self selector:@selector(createCrawler:)];
     [self addChild:crawlerButton];
-    
-	return self;
+}
+
+- (void)addTiles
+{
+    CCTexture *tex;
+    CCSprite *sprite;
+    int width = iPhone ? 12 : 13;
+    float scale = iPhone ? 1.0f : 2.0f;
+    for (int i = 0; i < width; i++)
+    {
+        tex = [CCTexture textureWithFile:@"tiles.tga"];
+        sprite = [CCSprite spriteWithTexture:tex rect:CGRectMake(40.0f*(i%7), 0.0f, 40.0f, 32.0f)];
+        sprite.scale = scale;
+        [self addChild:sprite];
+        sprite.position = ccp(sprite.boundingBox.size.width/2*(2*i+1), sprite.boundingBox.size.height/2);
+    }
 }
 
 - (void)update:(CCTime)dt
@@ -157,7 +180,7 @@
 - (void)createCrawler:(id)sender
 {
     float randomX = (float)(arc4random() % ((int)_screenWidth - 128) + 64);
-    float y = iPhone ? 64.0f : 128.0f;
+    float y = iPhone ? 96.0f : 192.0f;
     bool randomDirection = (BOOL)(arc4random() % 2);
     float randomScale = (float)(arc4random() % 16 + 5)/10.0f;
     Crawler *crawler = [[Crawler alloc] initWithPosition:ccp(randomX, y)

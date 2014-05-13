@@ -28,6 +28,8 @@
 + (GameScene *)scene;
 
 - (id)init;
+- (void)addButtons;
+- (void)addTiles;
 - (void)toggleCollisionRectangles:(id)sender;
 - (void)createCrawler:(id)sender;
 

@@ -52,7 +52,7 @@
     [_view addChild:_renderableRun.sprite];
     
     // Configure the initial state
-    if (position.y > ([_view screenWidth] < 600.0f ? 64.0f : 128.0f))
+    if (position.y > ([_view screenWidth] < 600.0f ? 96.0f : 192.0f))
     {
         _state = ROBOT_FALL;
         _renderable = _renderableJump;
@@ -261,9 +261,9 @@
         {
             _velocityY -= _gravity * dt;
             self.position = ccp(_position.x, _position.y + (dt * _velocityY));
-            if (_position.y < ([_view screenWidth] < 600.0f ? 64.0f : 128.0f))
+            if (_position.y < ([_view screenWidth] < 600.0f ? 96.0f : 192.0f))
             {
-                self.position = ccp(_position.x, ([_view screenWidth] < 600.0f ? 64.0f : 128.0f));
+                self.position = ccp(_position.x, ([_view screenWidth] < 600.0f ? 96.0f : 192.0f));
                 self.state = ROBOT_IDLE;
                 break;
             }

@@ -26,7 +26,7 @@
     _tex = [CCTexture textureWithFile:imageFile];
     _cellWidth = _tex.contentSize.width/_numCells;
     _cellHeight = _tex.contentSize.height;
-    _sprite = [CCSprite spriteWithTexture:_tex rect:CGRectMake(0, 0, _cellWidth, _cellHeight)];
+    _sprite = [CCSprite spriteWithTexture:_tex rect:CGRectMake(0.0f, 0.0f, _cellWidth, _cellHeight)];
     _sprite.scale = 1.0f;
     
 	return self;
