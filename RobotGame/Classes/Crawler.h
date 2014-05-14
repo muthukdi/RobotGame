@@ -25,6 +25,7 @@ typedef enum CrawlerStateTypes
     float _walkingSpeedScale;
     CCTime _nextThinkTime;          // time to run next round of AI "thinking"
     CCTime _timeToDeath;
+    float _walkingSpeed;
 }
 
 @property (nonatomic, strong) Renderable *renderable;

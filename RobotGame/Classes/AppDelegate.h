@@ -23,6 +23,8 @@
 
 @end
 
+BOOL iPhone;
+
 @interface AppDelegate : CCAppDelegate
 
 @end

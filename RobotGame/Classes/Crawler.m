@@ -26,6 +26,7 @@
     
     _view = scene;
     _scale = 1.0f;
+    _walkingSpeed = iPhone ? 30.0f : 60.0f;
     _renderableIdle = [[Renderable alloc] initWithImageFile:@"crawler_idle.png"
                                                    duration:0.5f
                                               numberOfCells:8];
@@ -174,7 +175,6 @@
 
 - (void)update:(CCTime)dt
 {
-    float walkingSpeed = [_view screenWidth] < 600.0f ? 30.0f : 60.0f;
     switch (_state)
     {
         case CRAWLER_IDLE:
@@ -200,11 +200,11 @@
                 // Move in the current direction
                 if (self.direction)
                 {
-                    self.position = ccp(_position.x - (dt * _walkingSpeedScale * walkingSpeed), _position.y);
+                    self.position = ccp(_position.x - (dt * _walkingSpeedScale * _walkingSpeed), _position.y);
                 }
                 else
                 {
-                    self.position = ccp(_position.x + (dt * _walkingSpeedScale * walkingSpeed), _position.y);
+                    self.position = ccp(_position.x + (dt * _walkingSpeedScale * _walkingSpeed), _position.y);
                 }
                 // Collisions with the edge of the screen
                 if (_position.x < _width/2)

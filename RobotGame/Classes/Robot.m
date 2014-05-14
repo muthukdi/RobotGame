@@ -29,8 +29,8 @@
     _view = scene;
     _jumpEnabled = YES;
     _scale = 1.0f;
-    _gravity = [_view screenWidth] < 600.0f ? 1500.0f : 3000.0f;
-    _runningSpeed = [_view screenWidth] < 600.0f ? 250.0f : 500.0f;
+    _gravity = iPhone ? 1500.0f : 3000.0f;
+    _runningSpeed = iPhone ? 250.0f : 500.0f;
     _renderableIdle = [[Renderable alloc] initWithImageFile:@"robot_idle.png"
                                                    duration:1.0f
                                               numberOfCells:8];
@@ -52,7 +52,7 @@
     [_view addChild:_renderableRun.sprite];
     
     // Configure the initial state
-    if (position.y > ([_view screenWidth] < 600.0f ? 96.0f : 192.0f))
+    if (position.y > (iPhone ? 96.0f : 192.0f))
     {
         _state = ROBOT_FALL;
         _renderable = _renderableJump;
@@ -67,7 +67,7 @@
         _renderable = _renderableIdle;
         _renderableRun.sprite.visible = NO;
         _renderableJump.sprite.visible = NO;
-        _velocityY = [_view screenWidth] < 600.0f ? 600.0f : 1200.0f;
+        _velocityY = iPhone ? 600.0f : 1200.0f;
     }
     _width = _renderableIdle.sprite.boundingBox.size.width;
     _height = _renderableIdle.sprite.boundingBox.size.height;
@@ -101,20 +101,20 @@
         {
             [_renderableIdle rewind:0.0f];
             self.renderable = _renderableIdle;
-            _velocityY = [_view screenWidth] < 600.0f ? 600.0f : 1200.0f;
+            _velocityY = iPhone ? 600.0f : 1200.0f;
             break;
         }
         case ROBOT_RUN:
         {
             [_renderableRun rewind:0.0f];
-            _velocityY = [_view screenWidth] < 600.0f ? 600.0f : 1200.0f;
+            _velocityY = iPhone ? 600.0f : 1200.0f;
             self.renderable = _renderableRun;
             break;
         }
         case ROBOT_JUMP:
         {
             [_renderableJump rewind:0.0f];
-            _velocityY = [_view screenWidth] < 600.0f ? 600.0f : 1200.0f;
+            _velocityY = iPhone ? 600.0f : 1200.0f;
             self.renderable = _renderableJump;
             break;
         }
@@ -261,9 +261,9 @@
         {
             _velocityY -= _gravity * dt;
             self.position = ccp(_position.x, _position.y + (dt * _velocityY));
-            if (_position.y < ([_view screenWidth] < 600.0f ? 96.0f : 192.0f))
+            if (_position.y < (iPhone ? 96.0f : 192.0f))
             {
-                self.position = ccp(_position.x, ([_view screenWidth] < 600.0f ? 96.0f : 192.0f));
+                self.position = ccp(_position.x, (iPhone ? 96.0f : 192.0f));
                 self.state = ROBOT_IDLE;
                 break;
             }

@@ -11,8 +11,6 @@
 #import "Robot.h"
 #import "Crawler.h"
 
-// Easy trick to distinguish between iPhones and iPads
-#define iPhone _screenWidth < 600.0f
 
 @interface GameScene : CCScene <GameDelegate>
 {

@@ -47,6 +47,8 @@
 
 -(CCScene *)startScene
 {
+    // Easy trick to distinguish between iPhones and iPads
+    iPhone = [[CCDirector sharedDirector] viewSize].width < 600.0f ? YES : NO;
 	// This method should return the very first scene to be run when your app starts.
 	return [GameScene scene];
 }
