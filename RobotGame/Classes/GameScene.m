@@ -116,7 +116,8 @@
 {
     CCTexture *tex;
     CCSprite *sprite;
-    int width = iPhone ? 12 : 13;
+    // We need to distinguish between the two iPhone dimensions and the iPad
+    int width = iPhone ? (self.contentSize.width > 500.0f ? 15 : 12) : 13;
     float scale = iPhone ? 1.0f : 2.0f;
     for (int i = 0; i < width; i++)
     {

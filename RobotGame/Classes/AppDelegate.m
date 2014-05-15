@@ -18,6 +18,10 @@
 	// This is the only app delegate method you need to implement when inheriting from CCAppDelegate.
 	// This method is a good place to add one time setup code that only runs when your app is first launched.
 	
+    // Determine the device type for scaling and layout purposes
+    NSString *type = [UIDevice currentDevice].model;
+    iPhone = [type rangeOfString:@"iPhone"].location != NSNotFound ? YES : NO;
+    
 	// Setup Cocos2D with reasonable defaults for everything.
 	// There are a number of simple options you can change.
 	// If you want more flexibility, you can configure Cocos2D yourself instead of calling setupCocos2dWithOptions:.
@@ -47,8 +51,6 @@
 
 -(CCScene *)startScene
 {
-    // Easy trick to distinguish between iPhones and iPads
-    iPhone = [[CCDirector sharedDirector] viewSize].width < 600.0f ? YES : NO;
 	// This method should return the very first scene to be run when your app starts.
 	return [GameScene scene];
 }
