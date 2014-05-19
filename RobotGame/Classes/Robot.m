@@ -140,6 +140,8 @@
     _renderableJump.sprite.flipX = direction;
 }
 
+// This should not be used externally because the position always
+// refers to the actual renderable and not the collider
 - (void)setPosition:(CGPoint)position
 {
     _position = position;
@@ -148,19 +150,19 @@
 }
 
 
-// Return the position of the collider (for external use only)
+// Return the position of the collider
 - (CGPoint)position
 {
     return _collider.position;
 }
 
-// Return the width of the collider (for external use only)
+// Return the width of the collider
 - (CGFloat)width
 {
     return _collider.boundingBox.size.width;
 }
 
-// Return the height of the collider (for external use only)
+// Return the height of the collider
 - (CGFloat)height
 {
     return _collider.boundingBox.size.height;
@@ -174,6 +176,8 @@
     _renderableRun.sprite.scale = scale;
     _renderableIdle.sprite.scale = scale;
     _collider.scale = scale;
+    // To adjust the collider's position
+    self.position = _position;
 }
 
 - (void)bounce:(float)velocity
@@ -235,7 +239,7 @@
             {
                 _jumpEnabled = YES;
             }
-            // Determine direction of motion
+            // Determine direction of motion and move the robot
             if ([_view leftPressed])
             {
                 self.direction = YES;
@@ -247,13 +251,13 @@
                 self.position = ccp(_position.x + (dt * _runningSpeed), _position.y);
             }
             // Collisions with the edge of the screen
-            if (_position.x < _width/2)
+            if (self.position.x < self.width/2)
             {
-                self.position =  ccp(_width/2, _position.y);
+                self.position =  ccp(self.width/2, _position.y);
             }
-            if (_position.x > [_view screenWidth] - _width/2)
+            if (self.position.x > [_view screenWidth] - self.width/2)
             {
-                self.position =  ccp([_view screenWidth] - _width/2, _position.y);
+                self.position =  ccp([_view screenWidth] - self.width/2, _position.y);
             }
             break;
         }
@@ -261,13 +265,7 @@
         {
             _velocityY -= _gravity * dt;
             self.position = ccp(_position.x, _position.y + (dt * _velocityY));
-            if (_position.y < (iPhone ? 96.0f : 192.0f))
-            {
-                self.position = ccp(_position.x, (iPhone ? 96.0f : 192.0f));
-                self.state = ROBOT_IDLE;
-                break;
-            }
-            // Determine direction of motion
+            // Determine direction of motion and move the robot
             if ([_view leftPressed])
             {
                 self.direction = YES;
@@ -279,13 +277,13 @@
                 self.position = ccp(_position.x + (dt * _runningSpeed), _position.y);
             }
             // Collisions with the edge of the screen
-            if (_position.x < _width/2)
+            if (self.position.x < self.width/2)
             {
-                self.position =  ccp(_width/2, _position.y);
+                self.position =  ccp(self.width/2, _position.y);
             }
-            if (_position.x > [_view screenWidth] - _width/2)
+            if (self.position.x > [_view screenWidth] - self.width/2)
             {
-                self.position =  ccp([_view screenWidth] - _width/2, _position.y);
+                self.position =  ccp([_view screenWidth] - self.width/2, _position.y);
             }
             break;
         }

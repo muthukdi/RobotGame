@@ -18,6 +18,8 @@
     CCButton *leftButton, *rightButton, *jumpButton1, *jumpButton2, *collisionButton, *crawlerButton;
     NSMutableArray *_crawlers;
     CCTime _time;  // time (in seconds) since the game started
+    int _grid[15][12];
+    CCNodeColor *node;
 }
 
 @property (nonatomic, assign) CGFloat screenWidth;
@@ -28,7 +30,9 @@
 - (id)init;
 - (void)addButtons;
 - (void)addTiles;
+- (void)outputGrid;
 - (void)toggleCollisionRectangles:(id)sender;
 - (void)createCrawler:(id)sender;
+- (BOOL)doesTileExistUnderRobot;
 
 @end

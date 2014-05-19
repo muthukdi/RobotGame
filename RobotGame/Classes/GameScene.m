@@ -27,6 +27,14 @@
     _screenHeight = self.contentSize.height;
     // Initialize the time
     _time = 0.0;
+    // Initialize the grid array (12 rows, 15 columns)
+    for (int i = 0; i < 12; i++)
+    {
+        for (int j = 0; j < 15; j++)
+        {
+            _grid[j][i] = 0;
+        }
+    }
     // Play the background music
     [[OALSimpleAudio sharedInstance] playBg:@"music.mp3" volume:0.3f pan:0.0f loop:YES];
     CCSprite *background = [CCSprite spriteWithImageNamed:@"Layer1.png"];
@@ -34,6 +42,7 @@
     background.scale = iPhone ? 0.56f : 1.0f;
     [self addChild:background];
     [self addTiles];
+    [self outputGrid];
     // Initialize the crawlers with random configurations
     _crawlers = [NSMutableArray arrayWithCapacity:4];
     float randomX;
@@ -55,6 +64,14 @@
     // Initialize the robot
     _robot = [[Robot alloc] initWithPosition:ccp(_screenWidth/8, y) view:self];
     _robot.scale = iPhone ? 1.0f : 2.0f;
+    // Bottom tile node
+    node = [CCNodeColor nodeWithColor:[CCColor colorWithRed:1.0f
+                                                      green:0.0f
+                                                       blue:0.0f]
+                                width:iPhone ? 40.0f : 80.0f
+                               height:iPhone ? 32.0f : 64.0f];
+    //[self addChild:node];
+    [self doesTileExistUnderRobot];
     // Add all the buttons
     [self addButtons];
     
@@ -119,20 +136,62 @@
     // We need to distinguish between the two iPhone dimensions and the iPad
     int width = iPhone ? (self.contentSize.width > 500.0f ? 15 : 12) : 13;
     float scale = iPhone ? 1.0f : 2.0f;
-    for (int i = 0; i < width; i++)
+    tex = [CCTexture textureWithFile:@"tiles.tga"];
+    for (int j = 0; j < width; j++)
     {
-        tex = [CCTexture textureWithFile:@"tiles.tga"];
-        sprite = [CCSprite spriteWithTexture:tex rect:CGRectMake(40.0f*(i%7), 0.0f, 40.0f, 32.0f)];
+        sprite = [CCSprite spriteWithTexture:tex rect:CGRectMake(40.0f*(j%7), 0.0f, 40.0f, 32.0f)];
         sprite.scale = scale;
         [self addChild:sprite];
-        sprite.position = ccp(sprite.boundingBox.size.width/2*(2*i+1), sprite.boundingBox.size.height/2);
+        sprite.position = ccp(sprite.boundingBox.size.width/2*(2*j+1), sprite.boundingBox.size.height/2);
+        _grid[j][0] = 1;
     }
+    for (int j = 6; j < width; j++)
+    {
+        sprite = [CCSprite spriteWithTexture:tex rect:CGRectMake(40.0f*(j%7), 0.0f, 40.0f, 32.0f)];
+        sprite.scale = scale;
+        [self addChild:sprite];
+        sprite.position = ccp(sprite.boundingBox.size.width/2*(2*j+1), 9*sprite.boundingBox.size.height/2);
+        _grid[j][4] = 1;
+    }
+    
+}
+
+// Print the grid values to the console
+- (void)outputGrid
+{
+    for (int i = 11; i >= 0; i--)
+    {
+        printf("\n");
+        for (int j = 0; j < 15; j++)
+        {
+            printf("%d  ", _grid[j][i]);
+        }
+    }
+    printf("\n");
 }
 
 - (void)update:(CCTime)dt
 {
     // Increment the time elapsed
     _time += dt;
+    // If the robot is either falling or running
+    if (_robot.state != ROBOT_IDLE)
+    {
+        // Check if there is a tile under its feet
+        BOOL tileExists = [self doesTileExistUnderRobot];
+        // If the robot is falling and there's a tile
+        if (_robot.velocityY < 0.0f && tileExists)
+        {
+            // Break its fall
+            _robot.state = ROBOT_IDLE;
+        }
+        // If the robot is running and there's no tile
+        if (_robot.state == ROBOT_RUN && !tileExists)
+        {
+            // It must start falling
+            _robot.state = ROBOT_FALL;
+        }
+    }
     // Update the robot
     [_robot update:dt];
     
@@ -191,6 +250,29 @@
     crawler.scale = iPhone ? 1.0f : 2.0f;
     crawler.collider.visible = _robot.collider.visible;
     [_crawlers addObject:crawler];
+}
+
+- (BOOL)doesTileExistUnderRobot
+{
+    // A position on the tile/space (not necessarily the center) that's
+    // directly under the robot's feet.
+    CGFloat tileX = _robot.position.x;
+    CGFloat tileY = _robot.position.y - _robot.height/2 - (iPhone ? 16.0f : 32.0f);
+    // Now check this position against the grid array
+    int j = (int)tileX / (iPhone ? 40 : 80);
+    int i = (int)tileY / (iPhone ? 32 : 64);
+    // Set the actual position (bottom-left for nodes!) of the bottom tile node
+    node.position = ccp(j * (iPhone ? 40.0f : 80.0f), i * (iPhone ? 32.0f : 64.0f));
+    BOOL tileExists = _grid[j][i];
+    // Before the robot's fall is broken, correct its y position and
+    // don't forget to adjust the value here to compensate for the fact
+    // that we are not modifying the collider's position directly!
+    if (_robot.velocityY < 0.0f && tileExists)
+    {
+        CGFloat y = (i + 1) * (iPhone ? 32.0f : 64.0f) + _robot.height/2 + 0.35*_robot.collider.boundingBox.size.height;
+        _robot.position = ccp(_robot.position.x, y);
+    }
+    return tileExists;
 }
 
 
