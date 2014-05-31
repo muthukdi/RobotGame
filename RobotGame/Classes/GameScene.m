@@ -170,7 +170,7 @@
     printf("\n");
 }
 
-- (void)update:(CCTime)dt
+- (void)fixedUpdate:(CCTime)dt
 {
     // Increment the time elapsed
     _time += dt;
