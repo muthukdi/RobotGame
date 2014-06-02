@@ -19,7 +19,7 @@
     NSMutableArray *_crawlers;
     CCTime _time;  // time (in seconds) since the game started
     int _grid[15][12];
-    CCNodeColor *node;
+    CCNodeColor *feetNode;
 }
 
 @property (nonatomic, assign) CGFloat screenWidth;

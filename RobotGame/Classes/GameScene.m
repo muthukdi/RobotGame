@@ -65,12 +65,12 @@
     _robot = [[Robot alloc] initWithPosition:ccp(_screenWidth/8, y) view:self];
     _robot.scale = iPhone ? 1.0f : 2.0f;
     // Bottom tile node
-    node = [CCNodeColor nodeWithColor:[CCColor colorWithRed:1.0f
+    feetNode = [CCNodeColor nodeWithColor:[CCColor colorWithRed:1.0f
                                                       green:0.0f
                                                        blue:0.0f]
                                 width:iPhone ? 40.0f : 80.0f
                                height:iPhone ? 32.0f : 64.0f];
-    //[self addChild:node];
+    //[self addChild:feetNode];
     [self doesTileExistUnderRobot];
     // Add all the buttons
     [self addButtons];
@@ -134,26 +134,38 @@
     CCTexture *tex;
     CCSprite *sprite;
     // We need to distinguish between the two iPhone dimensions and the iPad
-    int width = iPhone ? (self.contentSize.width > 500.0f ? 15 : 12) : 13;
+    //int width = iPhone ? (self.contentSize.width > 500.0f ? 15 : 12) : 13;
+    //int height = iPhone ? 10 : 12;
     float scale = iPhone ? 1.0f : 2.0f;
     tex = [CCTexture textureWithFile:@"tiles.tga"];
-    for (int j = 0; j < width; j++)
+    // Extract the content of the layout text file
+    NSString *path = [[NSBundle mainBundle] pathForResource:@"0"
+                                                     ofType:@"txt"];
+    NSString *content = [NSString stringWithContentsOfFile:path
+                                                  encoding:NSUTF8StringEncoding
+                                                     error:nil];
+    NSArray *rows = [content componentsSeparatedByString:@"\n"];
+    NSAssert(rows.count == 12, @"The specified layout is not valid!");
+    NSString *row;
+    NSLog(@"Length of row = %d", row.length);
+    for (int i = 0; i < 12; i++)
     {
-        sprite = [CCSprite spriteWithTexture:tex rect:CGRectMake(40.0f*(j%7), 0.0f, 40.0f, 32.0f)];
-        sprite.scale = scale;
-        [self addChild:sprite];
-        sprite.position = ccp(sprite.boundingBox.size.width/2*(2*j+1), sprite.boundingBox.size.height/2);
-        _grid[j][0] = 1;
+        row = (NSString *)[rows objectAtIndex:11-i]; // Read the text upwards!
+        NSAssert(row.length == 15, @"The specified layout is not valid!");
+        for (int j = 0; j < 15; j++)
+        {
+            if ([row characterAtIndex:j] == '#')
+            {
+                sprite = [CCSprite spriteWithTexture:tex
+                                                rect:CGRectMake(40.0f*(j%7), 0.0f, 40.0f, 32.0f)];
+                sprite.scale = scale;
+                [self addChild:sprite];
+                sprite.position = ccp(sprite.boundingBox.size.width/2*(2*j+1),
+                                      sprite.boundingBox.size.height/2*(2*i+1));
+                _grid[j][i] = 1;
+            }
+        }
     }
-    for (int j = 6; j < width; j++)
-    {
-        sprite = [CCSprite spriteWithTexture:tex rect:CGRectMake(40.0f*(j%7), 0.0f, 40.0f, 32.0f)];
-        sprite.scale = scale;
-        [self addChild:sprite];
-        sprite.position = ccp(sprite.boundingBox.size.width/2*(2*j+1), 9*sprite.boundingBox.size.height/2);
-        _grid[j][4] = 1;
-    }
-    
 }
 
 // Print the grid values to the console
@@ -257,13 +269,15 @@
     // A position on the tile/space (not necessarily the center) that's
     // directly under the robot's feet.
     CGFloat tileX = _robot.position.x;
-    CGFloat tileY = _robot.position.y - _robot.height/2 - (iPhone ? 16.0f : 32.0f);
+    CGFloat tileY = _robot.position.y - _robot.height/2 - (iPhone ? 8.0f : 16.0f);
     // Now check this position against the grid array
     int j = (int)tileX / (iPhone ? 40 : 80);
     int i = (int)tileY / (iPhone ? 32 : 64);
     // Set the actual position (bottom-left for nodes!) of the bottom tile node
-    node.position = ccp(j * (iPhone ? 40.0f : 80.0f), i * (iPhone ? 32.0f : 64.0f));
-    BOOL tileExists = _grid[j][i];
+    feetNode.position = ccp(j * (iPhone ? 40.0f : 80.0f), i * (iPhone ? 32.0f : 64.0f));
+    BOOL tileExists;
+    // Don't access the array out of its bounds!
+    tileExists = (i < 12 && j < 15) ? _grid[j][i] : NO;
     // Before the robot's fall is broken, correct its y position and
     // don't forget to adjust the value here to compensate for the fact
     // that we are not modifying the collider's position directly!
