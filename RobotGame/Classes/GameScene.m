@@ -269,7 +269,7 @@
     // A position on the tile/space (not necessarily the center) that's
     // directly under the robot's feet.
     CGFloat tileX = _robot.position.x;
-    CGFloat tileY = _robot.position.y - _robot.height/2 - (iPhone ? 8.0f : 16.0f);
+    CGFloat tileY = _robot.position.y - _robot.height/2 - (iPhone ? 6.0f : 12.0f);
     // Now check this position against the grid array
     int j = (int)tileX / (iPhone ? 40 : 80);
     int i = (int)tileY / (iPhone ? 32 : 64);
