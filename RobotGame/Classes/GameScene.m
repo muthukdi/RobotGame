@@ -314,14 +314,16 @@
 - (BOOL)doesTileExistUnderCrawler:(Crawler *)crawler
 {
     // A position on the tile/space (not necessarily the center) that's
-    // within a few pixels under the crawler
-    CGFloat tileX = crawler.position.x;
+    // within a few pixels diagonally downwards from the crawler
+    CGFloat tileX;
+    // Add or subtract some horizontal space to prevent the crawler from walking past the edge
+    tileX = crawler.direction ? crawler.position.x - crawler.width/2 : crawler.position.x + crawler.width/2;
     CGFloat tileY = crawler.position.y - crawler.height/2 - (iPhone ? 6.0f : 12.0f);
     // Now check this position against the grid array
     int j = (int)tileX / (iPhone ? 40 : 80);
     int i = (int)tileY / (iPhone ? 32 : 64);
     // Don't access the array out of its bounds!
-    return (i < 12 && j < 15) ? _grid[j][i] : NO;
+    return (i < 12 && j < 15 && tileX >= 0) ? _grid[j][i] : NO;
 }
 
 
