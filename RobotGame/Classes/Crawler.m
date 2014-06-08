@@ -39,6 +39,9 @@
     // Initialize collider
     _collider = [CCSprite spriteWithTexture:[CCTexture textureWithFile:@"yellow.png"]
                                        rect:CGRectMake(0.0f, 0.0f, 35.0f, 35.0f)];
+    // Need to set this scale here or else the bounding
+    // box reference below will have an incorrect value.
+    _collider.scale = iPhone ? 1.0f : 2.0f;
     _collider.opacity = 0.3f;
     _collider.visible = NO;
     [_view addChild:_collider];
@@ -73,6 +76,8 @@
     _renderable.sprite.position = position;
     _collider.position = ccp(position.x, position.y - 1.33*_collider.boundingBox.size.height);
     _timeToDeath = _renderableDie.duration;
+    int numCycles = arc4random() % 6 + 5;
+    _nextThinkTime = [_view getTimeElapsed] + numCycles * _renderableWalk.duration;
     
     return self;
 }
@@ -193,11 +198,28 @@
         {
             if ([_view getTimeElapsed] >= _nextThinkTime)
             {
-                self.state = CRAWLER_IDLE;
+                // Don't let the crawler stop at the edge of the platform
+                // because the subsequent speed change messes up the
+                // edge collision logic!
+                if ([_view doesTileExistUnderCrawler:self])
+                {
+                    self.state = CRAWLER_IDLE;
+                }
+                else
+                {
+                    NSLog(@"A crawler tried to stop at an edge!");
+                    int numCycles = arc4random() % 6 + 5;
+                    _nextThinkTime = [_view getTimeElapsed] + numCycles * _renderableWalk.duration;
+                    // Since the direction would already been reversed
+                    // at this point, we need to ensure that the else block
+                    // below gets executed in order to move the crawler
+                    // one step back from the edge.
+                    [self update:dt];
+                }
             }
             else
             {
-                // Move in the current direction
+                // Move one step in the current direction
                 if (self.direction)
                 {
                     self.position = ccp(_position.x - (dt * _walkingSpeedScale * _walkingSpeed), _position.y);
@@ -205,17 +227,6 @@
                 else
                 {
                     self.position = ccp(_position.x + (dt * _walkingSpeedScale * _walkingSpeed), _position.y);
-                }
-                // Collisions with the edge of the screen
-                if (_position.x < _width/2)
-                {
-                    self.direction = NO;
-                    self.position =  ccp(_width/2, _position.y);
-                }
-                if (_position.x > [_view screenWidth] - _width/2)
-                {
-                    self.direction = YES;
-                    self.position =  ccp([_view screenWidth] - _width/2, _position.y);
                 }
                 [_renderable animate:dt * _walkingSpeedScale];
             }

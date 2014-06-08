@@ -41,26 +41,12 @@
     background.position = ccp(_screenWidth/2, _screenHeight/2);
     background.scale = iPhone ? 0.56f : 1.0f;
     [self addChild:background];
-    [self addTiles];
-    [self outputGrid];
-    // Initialize the crawlers with random configurations
+    // Initialize the crawler array
     _crawlers = [NSMutableArray arrayWithCapacity:4];
-    float randomX;
-    BOOL randomDirection;
-    float randomScale;
+    // Load the level
+    [self loadLevel];
+    [self outputGrid];
     float y = iPhone ? 96.0f : 192.0f;
-    for (int i = 0; i < 4; i++)
-    {
-        randomX = (float)(arc4random() % ((int)_screenWidth - 128) + 64);
-        randomDirection = (BOOL)(arc4random() % 2);
-        randomScale = (float)(arc4random() % 16 + 5)/10.0f;
-        Crawler *crawler = [[Crawler alloc] initWithPosition:ccp(randomX, y)
-                                                        view:self
-                                                   direction:randomDirection
-                                                  speedScale:randomScale];
-        crawler.scale = iPhone ? 1.0f : 2.0f;
-        [_crawlers addObject:crawler];
-    }
     // Initialize the robot
     _robot = [[Robot alloc] initWithPosition:ccp(_screenWidth/8, y) view:self];
     _robot.scale = iPhone ? 1.0f : 2.0f;
@@ -129,7 +115,8 @@
     [self addChild:crawlerButton];
 }
 
-- (void)addTiles
+// Load a level from a layout file
+- (void)loadLevel
 {
     CCTexture *tex;
     CCSprite *sprite;
@@ -137,6 +124,8 @@
     //int width = iPhone ? (self.contentSize.width > 500.0f ? 15 : 12) : 13;
     //int height = iPhone ? 10 : 12;
     float scale = iPhone ? 1.0f : 2.0f;
+    float tileWidth = iPhone ? 40.0f : 80.0f;
+    float tileHeight = iPhone ? 32.0f : 64.0f;
     tex = [CCTexture textureWithFile:@"tiles.tga"];
     // Extract the content of the layout text file
     NSString *path = [[NSBundle mainBundle] pathForResource:@"0"
@@ -147,7 +136,17 @@
     NSArray *rows = [content componentsSeparatedByString:@"\n"];
     NSAssert(rows.count == 12, @"The specified layout is not valid!");
     NSString *row;
-    NSLog(@"Length of row = %d", row.length);
+    // Crawler variables
+    Crawler *crawler;
+    BOOL randomDirection;
+    float randomSpeedScale;
+    // Initialize a dummy crawler to save its height
+    crawler = [[Crawler alloc] initWithPosition:ccp(0.0f, 0.0f)
+                                           view:self
+                                      direction:NO
+                                     speedScale:0.0f];
+    crawler.scale = scale;
+    float crawlerHeight = crawler.collider.boundingBox.size.height;
     for (int i = 0; i < 12; i++)
     {
         row = (NSString *)[rows objectAtIndex:11-i]; // Read the text upwards!
@@ -159,10 +158,24 @@
                 sprite = [CCSprite spriteWithTexture:tex
                                                 rect:CGRectMake(40.0f*(j%7), 0.0f, 40.0f, 32.0f)];
                 sprite.scale = scale;
+                sprite.position = ccp(tileWidth/2*(2*j+1), tileHeight/2*(2*i+1));
                 [self addChild:sprite];
-                sprite.position = ccp(sprite.boundingBox.size.width/2*(2*j+1),
-                                      sprite.boundingBox.size.height/2*(2*i+1));
                 _grid[j][i] = 1;
+            }
+            else if ([row characterAtIndex:j] == 'w')
+            {
+                randomDirection = (BOOL)(arc4random() % 2);
+                randomSpeedScale = (float)(arc4random() % 16 + 5)/10.0f;
+                // Don't forget to adjust the value here to compensate for the fact
+                // that we are not modifying the collider's position directly!
+                CGPoint position = ccp(tileWidth/2*(2*j+1),
+                                       tileHeight/2*(2*i+1) + 1.33*crawlerHeight);
+                crawler = [[Crawler alloc] initWithPosition:position
+                                                       view:self
+                                                  direction:randomDirection
+                                                 speedScale:randomSpeedScale];
+                crawler.scale = scale;
+                [_crawlers addObject:crawler];
             }
         }
     }
@@ -186,7 +199,7 @@
 {
     // Increment the time elapsed
     _time += dt;
-    // If the robot is either falling or running
+    // Update the robot
     if (_robot.state != ROBOT_IDLE)
     {
         // Check if there is a tile under its feet
@@ -204,7 +217,6 @@
             _robot.state = ROBOT_FALL;
         }
     }
-    // Update the robot
     [_robot update:dt];
     
     // Update the crawlers
@@ -234,6 +246,15 @@
                 }
             }
         }
+        if (crawler.state != ROBOT_IDLE)
+        {
+            // If there is no tile under the crawler, flip its direction
+            BOOL tileExists = [self doesTileExistUnderCrawler:crawler];
+            if (!tileExists)
+            {
+                crawler.direction = !crawler.direction;
+            }
+        }
         [crawler update:dt];
     }
     // Remove the dead crawlers
@@ -249,6 +270,7 @@
     }
 }
 
+// Spawn a crawler when the button is pressed
 - (void)createCrawler:(id)sender
 {
     float randomX = (float)(arc4random() % ((int)_screenWidth - 128) + 64);
@@ -267,7 +289,7 @@
 - (BOOL)doesTileExistUnderRobot
 {
     // A position on the tile/space (not necessarily the center) that's
-    // directly under the robot's feet.
+    // within a few pixels under the robot's feet
     CGFloat tileX = _robot.position.x;
     CGFloat tileY = _robot.position.y - _robot.height/2 - (iPhone ? 6.0f : 12.0f);
     // Now check this position against the grid array
@@ -287,6 +309,19 @@
         _robot.position = ccp(_robot.position.x, y);
     }
     return tileExists;
+}
+
+- (BOOL)doesTileExistUnderCrawler:(Crawler *)crawler
+{
+    // A position on the tile/space (not necessarily the center) that's
+    // within a few pixels under the crawler
+    CGFloat tileX = crawler.position.x;
+    CGFloat tileY = crawler.position.y - crawler.height/2 - (iPhone ? 6.0f : 12.0f);
+    // Now check this position against the grid array
+    int j = (int)tileX / (iPhone ? 40 : 80);
+    int i = (int)tileY / (iPhone ? 32 : 64);
+    // Don't access the array out of its bounds!
+    return (i < 12 && j < 15) ? _grid[j][i] : NO;
 }
 
 

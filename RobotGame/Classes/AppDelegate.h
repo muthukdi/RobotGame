@@ -9,6 +9,8 @@
 
 #import "cocos2d.h"
 
+@class Crawler;
+
 @protocol GameDelegate
 
 - (void)addChild:(CCNode*)child;
@@ -20,6 +22,7 @@
 - (BOOL)jumpPressed;
 - (CCTime)getTimeElapsed;
 - (void)removeChild:(CCNode *)child cleanup:(BOOL)cleanup;
+- (BOOL)doesTileExistUnderCrawler:(Crawler *)crawler;
 
 @end
 

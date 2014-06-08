@@ -29,10 +29,11 @@
 
 - (id)init;
 - (void)addButtons;
-- (void)addTiles;
+- (void)loadLevel;
 - (void)outputGrid;
 - (void)toggleCollisionRectangles:(id)sender;
 - (void)createCrawler:(id)sender;
 - (BOOL)doesTileExistUnderRobot;
+- (BOOL)doesTileExistUnderCrawler:(Crawler *)crawler;
 
 @end
