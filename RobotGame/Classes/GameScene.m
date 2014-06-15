@@ -274,16 +274,46 @@
 // Spawn a crawler when the button is pressed
 - (void)createCrawler:(id)sender
 {
-    float randomX = (float)(arc4random() % ((int)_screenWidth - 128) + 64);
-    float y = iPhone ? 96.0f : 192.0f;
-    bool randomDirection = (BOOL)(arc4random() % 2);
-    float randomScale = (float)(arc4random() % 16 + 5)/10.0f;
-    Crawler *crawler = [[Crawler alloc] initWithPosition:ccp(randomX, y)
-                                                    view:self
-                                               direction:randomDirection
-                                              speedScale:randomScale];
-    crawler.scale = iPhone ? 1.0f : 2.0f;
-    crawler.collider.visible = _robot.collider.visible;
+    float scale = iPhone ? 1.0f : 2.0f;
+    float tileWidth = iPhone ? 40.0f : 80.0f;
+    float tileHeight = iPhone ? 32.0f : 64.0f;
+    Crawler *crawler;
+    BOOL randomDirection = (BOOL)(arc4random() % 2);
+    float randomSpeedScale = (float)(arc4random() % 16 + 5)/10.0f;
+    // Initialize a dummy crawler to save its height
+    crawler = [[Crawler alloc] initWithPosition:ccp(0.0f, 0.0f)
+                                           view:self
+                                      direction:NO
+                                     speedScale:0.0f];
+    crawler.scale = scale;
+    float crawlerHeight = crawler.collider.boundingBox.size.height;
+    // We need to obtain a list of valid crawler positions
+    NSMutableArray *validPositions = [NSMutableArray arrayWithCapacity:12*15];
+    CGPoint position;
+    for (int i = 0; i < 12; i++)
+    {
+        for (int j = 0; j < 15; j++)
+        {
+            if (_grid[j][i] == 1)
+            {
+                // Don't forget to adjust the value here to compensate for the fact
+                // that we are not modifying the collider's position directly!
+                position = ccp(tileWidth/2*(2*j+1),
+                               tileHeight/2*(2*i+3) + 1.33*crawlerHeight);
+                [validPositions addObject:[NSValue valueWithCGPoint:position]];
+            }
+        }
+    }
+    // Choose a random position from this list
+    int index = arc4random() % validPositions.count;
+    NSValue *value = (NSValue *)[validPositions objectAtIndex:index];
+    [value getValue:&position];
+    // Create the crawler
+    crawler = [[Crawler alloc] initWithPosition:position
+                                           view:self
+                                      direction:randomDirection
+                                     speedScale:randomSpeedScale];
+    crawler.scale = scale;
     [_crawlers addObject:crawler];
 }
 
