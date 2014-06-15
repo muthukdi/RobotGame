@@ -45,11 +45,11 @@
                                        rect:CGRectMake(0.0f, 0.0f, 35.0f, 75.0f)];
     _collider.opacity = 0.3f;
     _collider.visible = NO;
-    [_view addChild:_collider];
+    [_view addChild:_collider z:10000];
     // Add the sprites to the game scene
-    [_view addChild:_renderableIdle.sprite];
-    [_view addChild:_renderableJump.sprite];
-    [_view addChild:_renderableRun.sprite];
+    [_view addChild:_renderableIdle.sprite z:10000];
+    [_view addChild:_renderableJump.sprite z:10000];
+    [_view addChild:_renderableRun.sprite z:10000];
     
     // Configure the initial state
     if (position.y > (iPhone ? 96.0f : 192.0f))

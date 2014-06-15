@@ -23,6 +23,7 @@
 - (CCTime)getTimeElapsed;
 - (void)removeChild:(CCNode *)child cleanup:(BOOL)cleanup;
 - (BOOL)doesTileExistUnderCrawler:(Crawler *)crawler;
+- (void)addChild:(CCNode*) child z:(NSInteger)z;
 
 @end
 

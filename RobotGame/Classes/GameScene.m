@@ -314,6 +314,7 @@
                                       direction:randomDirection
                                      speedScale:randomSpeedScale];
     crawler.scale = scale;
+    crawler.collider.visible = _robot.collider.visible;
     [_crawlers addObject:crawler];
 }
 
