@@ -228,13 +228,14 @@
         {
             [deadCrawlers addObject:crawler];
         }
-        // Check if the robot has stomped on this crawler
-        if (_robot.velocityY < 0.0f)
+        // If the robot is either falling or its idle
+        if (_robot.velocityY < 0.0f || _robot.state == ROBOT_IDLE)
         {
-            if (_robot.position.x + _robot.width/2 > crawler.position.x - crawler.width/2 &&
-                _robot.position.x - _robot.width/2 < crawler.position.x + crawler.width/2 &&
+            // Check if the robot has stomped on this crawler
+            if (_robot.position.x + _robot.width/3 > crawler.position.x - crawler.width/2 &&
+                _robot.position.x - _robot.width/3 < crawler.position.x + crawler.width/2 &&
                 _robot.position.y - _robot.height/2 < crawler.position.y + crawler.height/2 &&
-                _robot.position.y + _robot.height/2 > crawler.position.y - crawler.height/2)
+                _robot.position.y - _robot.height/2 > crawler.position.y + crawler.height/4)
             {
                 // Make sure that the crawler is not already dying or dead
                 if (crawler.state != CRAWLER_DYING && crawler.state != CRAWLER_DEAD)
